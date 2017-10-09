@@ -1,4 +1,5 @@
 # Andela Track Challenge
+![Andela Track Challenge](https://andela.com/wp-content/uploads/2017/04/Facebook.jpg?zoom=2&resize=1038%2C576)
 My Andela Learning Community 2.0 Android Intermediate Assessment Track Challenge
 
 ## Prerequisites
