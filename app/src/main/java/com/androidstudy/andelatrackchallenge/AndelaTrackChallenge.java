@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.Environment;
 
 import com.androidstudy.andelatrackchallenge.models.MyObjectBox;
+import com.facebook.FacebookSdk;
 
 import java.io.File;
 
@@ -14,6 +15,11 @@ import io.objectbox.BoxStore;
  */
 
 public class AndelaTrackChallenge extends Application {
+    /**
+     * This class is necessary to initialize the following
+     * Facebook SDK
+     * ObjectBox ORM
+     */
     public static final boolean EXTERNAL_DIR = false;
 
     private BoxStore boxStore;
@@ -24,6 +30,9 @@ public class AndelaTrackChallenge extends Application {
         super.onCreate();
 
         instance = this;
+
+        //Initialize Facebook SDK
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         if (EXTERNAL_DIR) {
             // Example how you could use a custom dir in "external storage"

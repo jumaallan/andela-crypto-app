@@ -33,11 +33,16 @@ dependencies {
     implementation 'com.android.support:palette-v7:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.github.jumadeveloper:networkmanager:0.0.2' //Check Internet Status
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0' //Network Calls
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0' //Network/HTTP Calls
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0' //Handle GSON using Retrofit
     implementation 'com.github.bumptech.glide:glide:4.2.0' //Handle Images
     annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
     implementation 'com.jakewharton:butterknife:8.8.1' //Bind our Views
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'io.objectbox:objectbox-android:1.0.1' //Local DB
+    compile 'com.facebook.android:facebook-android-sdk:4.27.0' //Facebook SDK
+    compile 'com.google.android.gms:play-services-auth:11.4.2' //Google Login SDK
+
 }
+
+apply plugin: 'com.google.gms.google-services'
