@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Andela Track Challenge</string>
     <string name="action_settings">Settings</string>
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Create Cards!</string>
+    <string name="slide_1_desc">Create card easily!</string>
+
+    <string name="slide_2_title">Choose Currency</string>
+    <string name="slide_2_desc">Choose currencies you are interested in!</string>
+
+    <string name="slide_3_title">Exchange Rates</string>
+    <string name="slide_3_desc">Get the latest exchange rates!</string>
+
 </resources>

@@ -14,6 +14,8 @@ public class Settings {
     public static final String SHARED_PREF_NAME = "andela";
     //Check if the User is logged in or not
     public static final String LOGGED_IN_SHARED_PREF = "loggedin";
+    //Check if its first time use
+    private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
 
     /**
      * This class is responsible for handling the Shared Preferences, We saved the application
@@ -43,5 +45,15 @@ public class Settings {
         settings.edit()
                 .putBoolean(LOGGED_IN_SHARED_PREF, loggedIn)
                 .apply();
+    }
+
+    public void setFirstTimeLaunch(boolean isFirstTime) {
+        settings.edit()
+                .putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime)
+                .apply();
+    }
+
+    public boolean isFirstTimeLaunch() {
+        return settings.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
 }
