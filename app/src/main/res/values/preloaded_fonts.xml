@@ -2,5 +2,6 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/bad_script</item>
+        <item>@font/fontdiner_swanky</item>
     </array>
 </resources>

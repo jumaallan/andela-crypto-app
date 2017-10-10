@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@drawable/bg"
     tools:context="com.androidstudy.andelatrackchallenge.LoginActivity">
 
     <ScrollView
@@ -27,11 +28,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/fontdiner_swanky"
+                android:textColor="@color/white"
                 android:text="@string/app_name"
-                android:fontFamily="@font/bad_script"
-                android:textStyle="bold"
                 android:textAlignment="center"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

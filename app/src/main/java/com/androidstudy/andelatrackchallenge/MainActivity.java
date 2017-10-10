@@ -1,26 +1,51 @@
 package com.androidstudy.andelatrackchallenge;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.androidstudy.andelatrackchallenge.fragments.HomeFragment;
+import com.androidstudy.andelatrackchallenge.models.User;
+import com.androidstudy.andelatrackchallenge.utils.Settings;
 import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
+import io.objectbox.Box;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.profile_image)
+    CircleImageView mProfileImage;
+
+    Box<User> userBox;
+    User user;
+    Settings settings;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +53,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ButterKnife.bind(this);
 
-        Glide.with(getApplicationContext())
-                .load()
-                .ov
-        getSupportActionBar().setLogo(R.drawable.ic_welcome_currency);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        ButterKnife.bind(this);
+        settings = new Settings(this.getApplicationContext());
+        userBox = ((AndelaTrackChallenge) getApplicationContext()).getBoxStore().boxFor(User.class);
+        user = userBox.query().build().findFirst();
+
+        init();
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         /**
          * Initialize the Home Fragment as the first
@@ -63,6 +101,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void init() {
+        /**
+         * Load User's Profile Image
+         */
+        Glide.with(getApplicationContext())
+                .load(user.image_url)
+                .into(mProfileImage);
+
+        //Toast welcome message
+        Toast.makeText(this, "Welcome " + user.name, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -76,12 +126,57 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        boolean facebook = settings.isFacebook();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_signout) {
+            if (facebook) {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                //Show Alert Dialog Box
+//                                new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
+//                                        .setTitleText("Andela Track Challenge")
+//                                        .setContentText("Are you sure you want to sign out?")
+//                                        .setConfirmText("Yes!")
+//                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                            @Override
+//                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                                sweetAlertDialog.dismiss();
+
+                                //Clear Shared Pref File
+                                settings.setLoggedInSharedPref(false);
+
+                                //Clear Local DB
+                                userBox.removeAll();
+
+                                //Redirect User to Login Page
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+//                                            }
+//                                        });
+                            }
+                        });
+            } else {
+                new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                        .Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse graphResponse) {
+
+                        LoginManager.getInstance().logOut();
+
+                    }
+                }).executeAsync();
+            }
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

@@ -39,10 +39,11 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
     implementation 'com.jakewharton:butterknife:8.8.1' //Bind our Views
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'io.objectbox:objectbox-android:1.0.1' //Local DB
-    compile 'com.facebook.android:facebook-android-sdk:4.27.0' //Facebook SDK
-    compile 'com.google.android.gms:play-services-auth:11.4.2' //Google Login SDK
-
+    implementation 'io.objectbox:objectbox-android:1.0.1' //Local DB
+    implementation 'com.facebook.android:facebook-android-sdk:4.27.0' //Facebook SDK
+    implementation 'com.google.android.gms:play-services-auth:11.4.2' //Google Login SDK
+    implementation 'de.hdodenhof:circleimageview:2.1.0' //Circular Profile ImageView
+    implementation 'cn.pedant.sweetalert:library:1.3' //Sweet Alert Dialog
 }
 
 apply plugin: 'com.google.gms.google-services'

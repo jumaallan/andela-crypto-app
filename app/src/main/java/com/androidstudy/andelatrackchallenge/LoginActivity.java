@@ -129,6 +129,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.d("Users", "Total Users : " + userBox.count());
 
                             settings.setLoggedInSharedPref(true);
+                            settings.setIsFacebook(true);
 
                             Intent login = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(login);
@@ -187,6 +188,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.d("Users", "Total Users : " + userBox.count());
 
             settings.setLoggedInSharedPref(true);
+            settings.setIsFacebook(false);
 
             Intent login = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(login);

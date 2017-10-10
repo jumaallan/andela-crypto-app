@@ -16,6 +16,8 @@ public class Settings {
     public static final String LOGGED_IN_SHARED_PREF = "loggedin";
     //Check if its first time use
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
+    //Check if its Facebook or Google
+    private static final String IS_FACEBOOK = "IsFacebook";
 
     /**
      * This class is responsible for handling the Shared Preferences, We saved the application
@@ -55,5 +57,15 @@ public class Settings {
 
     public boolean isFirstTimeLaunch() {
         return settings.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+    }
+
+    public void setIsFacebook(boolean isFacebook) {
+        settings.edit()
+                .putBoolean(IS_FIRST_TIME_LAUNCH, isFacebook)
+                .apply();
+    }
+
+    public boolean isFacebook() {
+        return settings.getBoolean(IS_FACEBOOK, true);
     }
 }
