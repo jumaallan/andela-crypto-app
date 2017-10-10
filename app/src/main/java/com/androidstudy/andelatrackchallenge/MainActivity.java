@@ -134,15 +134,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         new ResultCallback<Status>() {
                             @Override
                             public void onResult(Status status) {
-                                //Show Alert Dialog Box
-//                                new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
-//                                        .setTitleText("Andela Track Challenge")
-//                                        .setContentText("Are you sure you want to sign out?")
-//                                        .setConfirmText("Yes!")
-//                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                            @Override
-//                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                                                sweetAlertDialog.dismiss();
 
                                 //Clear Shared Pref File
                                 settings.setLoggedInSharedPref(false);
@@ -154,8 +145,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 startActivity(intent);
                                 finish();
-//                                            }
-//                                        });
                             }
                         });
             } else {
