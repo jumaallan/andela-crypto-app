@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.androidstudy.andelatrackchallenge.fragments.HomeFragment;
+import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+
+        Glide.with(getApplicationContext())
+                .load()
+                .ov
+        getSupportActionBar().setLogo(R.drawable.ic_welcome_currency);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         /**
          * Initialize the Home Fragment as the first
