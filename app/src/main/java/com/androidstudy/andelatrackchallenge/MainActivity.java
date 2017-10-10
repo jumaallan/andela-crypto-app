@@ -155,6 +155,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                         LoginManager.getInstance().logOut();
 
+                        //Clear Shared Pref File
+                        settings.setLoggedInSharedPref(false);
+
+                        //Clear Local DB
+                        userBox.removeAll();
+
+                        //Redirect User to Login Page
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+
                     }
                 }).executeAsync();
             }
