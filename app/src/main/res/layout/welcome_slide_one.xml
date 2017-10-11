@@ -20,6 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/slide_1_title"
+            android:fontFamily="@font/berkshire_swash"
+            android:layout_marginTop="16dp"
             android:textColor="@android:color/white"
             android:textSize="@dimen/slide_title"
             android:textStyle="bold" />
@@ -33,7 +35,9 @@
             android:text="@string/slide_1_desc"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/slide_desc" />
+            android:fontFamily="@font/bad_script"
+            android:textStyle="bold"
+            android:textAppearance="?android:textAppearanceMedium" />
 
     </LinearLayout>
 
