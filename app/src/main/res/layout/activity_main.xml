@@ -24,14 +24,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@mipmap/ic_launcher_andela_round"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="@color/white"/>
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="2dp" />
 
                 <TextView
                     android:id="@+id/title"
@@ -39,9 +38,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="16dp"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
                     android:gravity="left"
                     android:text="@string/app_name"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
                     tools:ignore="RtlHardcoded" />
 
             </LinearLayout>
@@ -50,7 +49,24 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include
+        android:id="@+id/view_empty"
+        layout="@layout/view_empty"
+        android:visibility="visible"
+        tools:visibility="visible" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/padding_rv_bottom"
+        android:paddingEnd="@dimen/padding_rv"
+        android:paddingStart="@dimen/padding_rv"
+        android:paddingTop="@dimen/padding_rv"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/row_currency"
+        tools:visibility="gone" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -58,6 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        app:fabSize="normal"
         app:srcCompat="@drawable/ic_action_add_card" />
 
 </android.support.design.widget.CoordinatorLayout>
