@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Andela Track Challenge</string>
+    <string name="app_name">Crypto Converter</string>
     <string name="action_signout">Sign Out</string>
 
     <string name="facebook_app_id">700496316815710</string>

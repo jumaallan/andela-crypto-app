@@ -6,4 +6,11 @@
     <dimen name="slide_title">30dp</dimen>
     <dimen name="slide_desc">16sp</dimen>
     <dimen name="desc_padding">40dp</dimen>
+    <dimen name="padding_normal">16dp</dimen>
+    <dimen name="padding_rv_bottom">56dp</dimen>
+    <dimen name="padding_rv">4dp</dimen>
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="card_list_margin">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_empty_bottom">56dp</dimen>
 </resources>
