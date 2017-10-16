@@ -10,7 +10,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
+        classpath 'com.android.tools.build:gradle:3.0.0-rc1'
         classpath 'io.objectbox:objectbox-gradle-plugin:1.0.1'
         classpath 'com.google.gms:google-services:3.1.0'
 
