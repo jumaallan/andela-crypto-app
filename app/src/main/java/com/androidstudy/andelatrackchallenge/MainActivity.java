@@ -4,59 +4,75 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.androidstudy.andelatrackchallenge.fragments.HomeFragment;
+import com.androidstudy.andelatrackchallenge.adapter.CardAdapter;
+import com.androidstudy.andelatrackchallenge.models.Country;
 import com.androidstudy.andelatrackchallenge.models.User;
+import com.androidstudy.andelatrackchallenge.picker.currency.Countries;
+import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerFragment;
+import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerListener;
+import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
 import com.androidstudy.andelatrackchallenge.utils.Settings;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.objectbox.Box;
+import io.objectbox.BoxStore;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.OnConnectionFailedListener, CurrencyPickerListener, OnItemClickListener<Country> {
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.profile_image)
     CircleImageView mProfileImage;
+    @BindView(R.id.view_empty)
+    View emptyView;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
 
-    Box<User> userBox;
-    User user;
-    Settings settings;
-    GoogleApiClient mGoogleApiClient;
+    private CurrencyPickerFragment pickerFragment;
+    private CardAdapter adapter;
+    private Box<User> userBox;
+    private Box<Country> countryBox;
+    private User user;
+    private Settings settings;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
 
-        ButterKnife.bind(this);
+        pickerFragment = CurrencyPickerFragment.newInstance(Countries.countries);
         settings = new Settings(this.getApplicationContext());
-        userBox = ((AndelaTrackChallenge) getApplicationContext()).getBoxStore().boxFor(User.class);
+
+        BoxStore boxStore = ((AndelaTrackChallenge) getApplicationContext()).getBoxStore();
+        userBox = boxStore.boxFor(User.class);
+        countryBox = boxStore.boxFor(Country.class);
         user = userBox.query().build().findFirst();
 
         init();
@@ -74,43 +90,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        /**
-         * Initialize the Home Fragment as the first
-         * We have a re-usable Frame Layout that we are re-using
-         */
-        if (savedInstanceState == null) {
-            Fragment fragment = null;
-            Class fragmentClass = null;
-            fragmentClass = HomeFragment.class;
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-        }
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(v -> pickerFragment.show(MainActivity.this.getSupportFragmentManager(), "currency-picker"));
     }
 
     private void init() {
-        /**
-         * Load User's Profile Image
-         */
+        // Load User's Profile Image
         Glide.with(getApplicationContext())
                 .load(user.image_url)
                 .into(mProfileImage);
 
         //Toast welcome message
         Toast.makeText(this, "Welcome " + user.name, Toast.LENGTH_SHORT).show();
+
+        adapter = new CardAdapter(this);
+        adapter.setEmptyView(emptyView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setCountries(countryBox.getAll());
     }
 
     @Override
@@ -131,42 +130,35 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (id == R.id.action_signout) {
             if (facebook) {
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(Status status) {
+                        status -> {
 
-                                //Clear Shared Pref File
-                                settings.setLoggedInSharedPref(false);
+                            //Clear Shared Pref File
+                            settings.setLoggedInSharedPref(false);
 
-                                //Clear Local DB
-                                userBox.removeAll();
+                            //Clear Local DB
+                            userBox.removeAll();
 
-                                //Redirect User to Login Page
-                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                            //Redirect User to Login Page
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
                         });
             } else {
-                new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                        .Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse graphResponse) {
+                new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, graphResponse -> {
 
-                        LoginManager.getInstance().logOut();
+                    LoginManager.getInstance().logOut();
 
-                        //Clear Shared Pref File
-                        settings.setLoggedInSharedPref(false);
+                    //Clear Shared Pref File
+                    settings.setLoggedInSharedPref(false);
 
-                        //Clear Local DB
-                        userBox.removeAll();
+                    //Clear Local DB
+                    userBox.removeAll();
 
-                        //Redirect User to Login Page
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                    //Redirect User to Login Page
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
 
-                    }
                 }).executeAsync();
             }
             return true;
@@ -177,6 +169,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
 
+    @Override
+    public void onPicked(Country country, int position) {
+        countryBox.put(country);
+        adapter.add(country);
+        Toast.makeText(this, "Added " + country.name, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(Country item, int position) {
+        // Open details and calculator
     }
 }

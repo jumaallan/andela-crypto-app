@@ -12,4 +12,5 @@ public class URLs {
      */
 
     static final String BASE_URL = "";
+    public static final String MIN_API_BASE_URL = "https://min-api.cryptocompare.com/";
 }

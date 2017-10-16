@@ -22,9 +22,37 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:5083141721050936711",
+      "lastPropertyId": "5:6873003256832544291",
+      "name": "Country",
+      "properties": [
+        {
+          "id": "1:1800915823270447537",
+          "name": "id"
+        },
+        {
+          "id": "2:4325563822236838303",
+          "name": "name"
+        },
+        {
+          "id": "3:279498715790659441",
+          "name": "currency"
+        },
+        {
+          "id": "4:5970945417190495339",
+          "name": "code"
+        },
+        {
+          "id": "5:6873003256832544291",
+          "name": "flagRes"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:1144517228845070522",
+  "lastEntityId": "2:5083141721050936711",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
