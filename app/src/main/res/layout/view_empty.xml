@@ -26,4 +26,5 @@
         android:padding="@dimen/padding_normal"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         tools:text="No cards added.\nTap the + button to add one now." />
+
 </FrameLayout>
