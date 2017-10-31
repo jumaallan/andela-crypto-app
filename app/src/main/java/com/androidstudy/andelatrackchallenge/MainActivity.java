@@ -4,22 +4,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.androidstudy.andelatrackchallenge.adapter.CardAdapter;
-import com.androidstudy.andelatrackchallenge.models.Country;
-import com.androidstudy.andelatrackchallenge.models.User;
+import com.androidstudy.andelatrackchallenge.model.Country;
+import com.androidstudy.andelatrackchallenge.model.Country_;
+import com.androidstudy.andelatrackchallenge.model.Exchange;
+import com.androidstudy.andelatrackchallenge.model.User;
+import com.androidstudy.andelatrackchallenge.network.Api;
+import com.androidstudy.andelatrackchallenge.network.ApiClient;
 import com.androidstudy.andelatrackchallenge.picker.currency.Countries;
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerFragment;
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerListener;
-import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
 import com.androidstudy.andelatrackchallenge.utils.Settings;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
@@ -31,11 +37,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
+import okhttp3.HttpUrl;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, CurrencyPickerListener, OnItemClickListener<Country> {
@@ -83,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
                 .requestEmail()
                 .build();
 
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // Build a GoogleApiClient with access to the Google Sign-In Api and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
@@ -96,20 +108,70 @@ public class MainActivity extends AppCompatActivity implements
     private void init() {
         // Load User's Profile Image
         Glide.with(getApplicationContext())
-                .load(user.image_url)
+                .load(user.imageUrl)
                 .into(mProfileImage);
 
         //Toast welcome message
         Toast.makeText(this, "Welcome " + user.name, Toast.LENGTH_SHORT).show();
 
         adapter = new CardAdapter(this);
-        adapter.setEmptyView(emptyView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        adapter.setCountries(countryBox.getAll());
+        List<Country> all = countryBox.getAll();
+        if (all != null) {
+            adapter.setCountries(all);
+            loadRates(all);
+        }
+    }
+
+    private void loadRates(List<Country> countries) {
+        for (Country country : countries)
+            loadRate(country);
+    }
+
+    private void loadRate(Country country) {
+        long fiveMinsBefore = System.currentTimeMillis() - (10 * 60 * 1000);
+        if (country.refreshedAt > fiveMinsBefore)
+            return;
+
+        Call<Exchange> call = ApiClient.getApi().getPrice(country.code, "BTC,ETH");
+        call.enqueue(new Callback<Exchange>() {
+            @Override
+            public void onResponse(@NonNull Call<Exchange> call,
+                                   @NonNull Response<Exchange> response) {
+
+                HttpUrl url = call.request().url();
+                String from = url.queryParameter(Api.FROM_SYMBOL);
+
+                if (TextUtils.isEmpty(from)) {
+                    return;
+                }
+
+                Exchange exchange = response.body();
+                if (exchange == null) {
+                    return;
+                }
+
+                List<Country> countries = adapter.getCountries();
+                for (Country country : countries) {
+                    if (ObjectsCompat.equals(country.code, from)) {
+                        country.eth = exchange.ethereum;
+                        country.btc = exchange.bitcoin;
+                        country.refreshedAt = System.currentTimeMillis();
+                        countryBox.put(country);
+                        adapter.replace(country);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Exchange> call, @NonNull Throwable t) {
+                Log.e("Card", call.request().url().toString(), t);
+            }
+        });
     }
 
     @Override
@@ -131,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements
             if (facebook) {
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                         status -> {
-
                             //Clear Shared Pref File
                             settings.setLoggedInSharedPref(false);
 
@@ -173,13 +234,26 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onPicked(Country country, int position) {
+        if (adapter.getCountries().contains(country)) {
+            return;
+        }
+
+        Country existingCountry = countryBox.query().equal(Country_.code, country.code).build()
+                .findFirst();
+        if (existingCountry != null) {
+            return;
+        }
+
         countryBox.put(country);
         adapter.add(country);
+        loadRate(country);
         Toast.makeText(this, "Added " + country.name, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onItemClick(Country item, int position) {
-        // Open details and calculator
+        Intent intent = new Intent(this, ExchangeCalculatorActivity.class);
+        intent.putExtra(ExchangeCalculatorActivity.COUNTRY, item);
+        startActivity(intent);
     }
 }
