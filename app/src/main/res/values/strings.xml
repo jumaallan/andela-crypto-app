@@ -18,4 +18,6 @@
     <string name="slide_3_title">Exchange Rates</string>
     <string name="slide_3_desc">Get the latest exchange rates!</string>
 
+    <string name="text_currency_units">%s %s</string>
+
 </resources>

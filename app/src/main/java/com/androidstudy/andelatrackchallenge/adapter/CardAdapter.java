@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.androidstudy.andelatrackchallenge.R;
 import com.androidstudy.andelatrackchallenge.models.Country;
+import com.androidstudy.andelatrackchallenge.utils.CurrencyUtils;
 import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
 
 import java.util.ArrayList;
