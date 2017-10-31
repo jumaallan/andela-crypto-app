@@ -1,6 +1,5 @@
 package com.androidstudy.andelatrackchallenge.network;
 
-import com.google.android.gms.common.api.Api;
 import com.squareup.moshi.Moshi;
 
 import okhttp3.OkHttpClient;
@@ -20,7 +19,7 @@ public class ApiClient {
     public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(URLs.MIN_API_BASE_URL)
+                    .baseUrl(URLs.BASE_URL)
                     .client(getOkClient())
                     .addConverterFactory(MoshiConverterFactory.create(getMoshi()))
                     .build();

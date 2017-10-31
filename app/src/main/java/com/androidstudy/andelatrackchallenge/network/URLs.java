@@ -7,9 +7,9 @@ package com.androidstudy.andelatrackchallenge.network;
 public class URLs {
     /**
      * This Java Class contains our URL End points
-     *
+     * <p>
      * You can easily change this once!
      */
 
-    public static final String MIN_API_BASE_URL = "https://min-api.cryptocompare.com/";
+    static final String BASE_URL = "https://min-api.cryptocompare.com/data/";
 }
