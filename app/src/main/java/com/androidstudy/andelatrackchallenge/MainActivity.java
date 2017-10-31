@@ -17,15 +17,16 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.androidstudy.andelatrackchallenge.adapter.CardAdapter;
-import com.androidstudy.andelatrackchallenge.model.Country;
-import com.androidstudy.andelatrackchallenge.model.Country_;
-import com.androidstudy.andelatrackchallenge.model.Exchange;
-import com.androidstudy.andelatrackchallenge.model.User;
+import com.androidstudy.andelatrackchallenge.models.Country;
+import com.androidstudy.andelatrackchallenge.models.Country_;
+import com.androidstudy.andelatrackchallenge.models.Exchange;
+import com.androidstudy.andelatrackchallenge.models.User;
 import com.androidstudy.andelatrackchallenge.network.Api;
 import com.androidstudy.andelatrackchallenge.network.ApiClient;
 import com.androidstudy.andelatrackchallenge.picker.currency.Countries;
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerFragment;
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerListener;
+import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
 import com.androidstudy.andelatrackchallenge.utils.Settings;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
     private void init() {
         // Load User's Profile Image
         Glide.with(getApplicationContext())
-                .load(user.imageUrl)
+                .load(user.image_url)
                 .into(mProfileImage);
 
         //Toast welcome message

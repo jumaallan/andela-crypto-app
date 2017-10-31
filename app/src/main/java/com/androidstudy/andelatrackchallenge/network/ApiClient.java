@@ -13,10 +13,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
  */
 
 public class ApiClient {
-    /**
-     * This class will help us create a re-usable Retrofit Client,
-     * to avoid repeating our code!
-     */
 
     private static Retrofit retrofit;
     private static OkHttpClient client;
@@ -32,8 +28,8 @@ public class ApiClient {
         return retrofit;
     }
 
-    public static Api getApi() {
-        return getClient().create(Api.class);
+    public static com.androidstudy.andelatrackchallenge.network.Api getApi() {
+        return getClient().create(com.androidstudy.andelatrackchallenge.network.Api.class);
     }
 
     public static Moshi getMoshi() {

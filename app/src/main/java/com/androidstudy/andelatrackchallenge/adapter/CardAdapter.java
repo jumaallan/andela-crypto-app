@@ -1,6 +1,9 @@
 package com.androidstudy.andelatrackchallenge.adapter;
 
+import android.content.Context;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +28,6 @@ import butterknife.ButterKnife;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
     private OnItemClickListener<Country> onItemClickListener;
     private List<Country> countries;
-    private View emptyView;
 
     public CardAdapter(OnItemClickListener<Country> onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -36,8 +39,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
     }
 
     public void setCountries(List<Country> countries) {
-        /*Log.d(this.getClass().getSimpleName(), "Countries: " + newCountries.size());
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new CountryDiffUtil(countries, newCountries));
+        /*DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new CountryDiffUtil(countries, countries));
         diffResult.dispatchUpdatesTo(this);*/
         if (countries == null) {
             this.countries.clear();
@@ -51,8 +53,20 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
         if (countries == null) return;
         for (Country country : countries) {
             if (country == null) continue;
-            this.countries.add(0, country);
-            notifyItemInserted(0);
+            this.countries.add(country);
+            notifyItemInserted(this.countries.size() - 1);
+        }
+    }
+
+    public void replace(Country newCountry) {
+        for (Country country : countries) {
+            if (ObjectsCompat.equals(country.code, newCountry.code)) {
+                int index = countries.indexOf(country);
+                countries.set(index, newCountry);
+                notifyItemChanged(index);
+
+                break;
+            }
         }
     }
 
@@ -64,10 +78,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
             countries.remove(country);
             notifyItemRemoved(index);
         }
-    }
-
-    public void setEmptyView(View emptyView) {
-        this.emptyView = emptyView;
     }
 
     @Override
@@ -88,14 +98,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
     }
 
     @Override
+    public void onViewRecycled(CardHolder holder) {
+        super.onViewRecycled(holder);
+        holder.unbind();
+    }
+
+    @Override
     public int getItemCount() {
-        int size = countries.size();
-        if (size <= 0) {
-            if (emptyView != null) emptyView.setVisibility(View.VISIBLE);
-        } else {
-            if (emptyView != null) emptyView.setVisibility(View.GONE);
-        }
-        return size;
+        return countries.size();
     }
 
     public class CardHolder extends RecyclerView.ViewHolder {
@@ -122,7 +132,29 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
         public void bind(Country country) {
             titleTextView.setText(country.name);
             flagImageView.setImageResource(country.flagRes);
+            Context context = itemView.getContext();
+            String currencyFormat = context.getString(R.string.text_currency_units);
+
+            float btcCountry = 1.0f / country.btc;
+            float ethCountry = 1.0f / country.eth;
+            Log.e("CardAdapter", country.toString());
+            Log.e("Bitcoin", "" + btcCountry);
+            Log.e("Ethereum", "" + ethCountry);
+
+            btcTextView.setText(country.btc > 0
+                    ? String.format(Locale.getDefault(), currencyFormat, country.code, CurrencyUtils.format.format(btcCountry))
+                    : "...");
+
+            ethTextView.setText(country.eth > 0
+                    ? String.format(Locale.getDefault(), currencyFormat, country.code, CurrencyUtils.format.format(ethCountry))
+                    : "...");
+        }
+
+        public void unbind() {
+            titleTextView.setText("");
+            btcTextView.setText("");
+            ethTextView.setText("");
+
         }
     }
 }
-
