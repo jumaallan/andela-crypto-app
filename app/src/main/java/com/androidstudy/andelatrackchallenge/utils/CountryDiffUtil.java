@@ -1,6 +1,7 @@
 package com.androidstudy.andelatrackchallenge.utils;
 
 import android.support.annotation.Nullable;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.util.DiffUtil;
 
 import com.androidstudy.andelatrackchallenge.models.Country;
@@ -32,14 +33,19 @@ public class CountryDiffUtil extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldCountries.get(oldItemPosition).code
-                .equalsIgnoreCase(newCountries.get(newItemPosition).currency);
+        return oldCountries.get(oldItemPosition).equals(newCountries.get(newItemPosition));
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldCountries.get(oldItemPosition)
-                .equals(newCountries.get(newItemPosition));
+        Country oldCountry = oldCountries.get(oldItemPosition);
+        Country newCountry = newCountries.get(newItemPosition);
+
+        return oldCountry.refreshedAt == newCountry.refreshedAt &&
+                oldCountry.btc == newCountry.btc &&
+                oldCountry.eth == newCountry.eth &&
+                ObjectsCompat.equals(oldCountry.currency, newCountry.currency) &&
+                ObjectsCompat.equals(oldCountry.code, newCountry.code);
     }
 
     @Nullable
@@ -48,4 +54,3 @@ public class CountryDiffUtil extends DiffUtil.Callback {
         return super.getChangePayload(oldItemPosition, newItemPosition);
     }
 }
-

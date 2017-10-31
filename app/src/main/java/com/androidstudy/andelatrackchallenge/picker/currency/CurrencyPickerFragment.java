@@ -6,13 +6,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.androidstudy.andelatrackchallenge.AndelaTrackChallenge;
 import com.androidstudy.andelatrackchallenge.adapter.CurrencyAdapter;
 import com.androidstudy.andelatrackchallenge.models.Country;
 import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
 
 import java.util.ArrayList;
+
+import io.objectbox.Box;
 
 /**
  * Created by anonymous on 10/17/17.
@@ -21,7 +25,7 @@ import java.util.ArrayList;
 public class CurrencyPickerFragment extends DialogFragment implements OnItemClickListener<Country> {
     private static final String COUNTRIES = "COUNTRIES";
 
-    private CurrencyAdapter adapter;
+    private com.androidstudy.andelatrackchallenge.picker.currency.CurrencyAdapter adapter;
     private LinearLayoutManager layoutManager;
     private CurrencyPickerListener pickerListener;
 
@@ -38,7 +42,7 @@ public class CurrencyPickerFragment extends DialogFragment implements OnItemClic
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ArrayList<Country> countries = getArguments().getParcelableArrayList(COUNTRIES);
-        // close dialog if country list is null
+        // close dialog if country1 list is null
         if (countries == null) dismiss();
 
         if (getActivity() instanceof CurrencyPickerListener)
@@ -46,8 +50,12 @@ public class CurrencyPickerFragment extends DialogFragment implements OnItemClic
         else
             dismiss();
 
-        adapter = new CurrencyAdapter(countries, this);
+        adapter = new com.androidstudy.andelatrackchallenge.picker.currency.CurrencyAdapter(countries, this);
         layoutManager = new LinearLayoutManager(getActivity());
+        Box<Country> countryBox = ((AndelaTrackChallenge) getActivity().getApplicationContext()).getBoxStore().boxFor(Country.class);
+        countryBox.query().build()
+                .subscribe()
+                .observer(data -> Log.i("Picker", "Data count: " + data.size()));
     }
 
     @NonNull

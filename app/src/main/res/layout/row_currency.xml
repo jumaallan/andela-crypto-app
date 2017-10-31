@@ -29,8 +29,8 @@
 
             <ImageView
                 android:id="@+id/image_view_currency_flag"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:contentDescription="@null"
                 tools:src="@drawable/flag_us" />
 
@@ -50,6 +50,10 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="72dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="72dp"
             android:background="@color/divider" />
 
         <LinearLayout
@@ -60,10 +64,10 @@
             android:padding="@dimen/padding_normal">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="@dimen/crypto_coin_height"
+                android:layout_height="@dimen/crypto_coin_height"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_bitcoin" />
+                android:src="@drawable/ic_bitcoin_grey" />
 
             <android.support.v4.widget.Space
                 android:layout_width="@dimen/padding_normal"
@@ -99,10 +103,10 @@
             android:padding="@dimen/padding_normal">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="@dimen/crypto_coin_height"
+                android:layout_height="@dimen/crypto_coin_height"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_ethereum" />
+                android:src="@drawable/ic_ethereum_grey" />
 
             <android.support.v4.widget.Space
                 android:layout_width="@dimen/padding_normal"

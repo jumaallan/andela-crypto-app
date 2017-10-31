@@ -119,3 +119,4 @@ public class Country implements Parcelable {
                 '}';
     }
 }
+
