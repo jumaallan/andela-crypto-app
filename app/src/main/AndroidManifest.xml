@@ -46,7 +46,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".ExchangeCalculatorActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

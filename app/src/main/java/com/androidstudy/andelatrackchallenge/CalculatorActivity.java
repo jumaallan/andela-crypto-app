@@ -20,19 +20,22 @@ import com.androidstudy.andelatrackchallenge.models.Exchange;
 import com.androidstudy.andelatrackchallenge.network.Api;
 import com.androidstudy.andelatrackchallenge.network.ApiClient;
 import com.androidstudy.andelatrackchallenge.utils.SimpleTextWatcher;
+import com.uber.autodispose.AutoDispose;
 
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.objectbox.Box;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
-public class CalculatorActivity extends AppCompatActivity {
-
+public class CalculatorActivity extends RxActivity {
     public static final String COUNTRY = "COUNTRY";
 
     private Box<Country> countryBox;
@@ -44,7 +47,6 @@ public class CalculatorActivity extends AppCompatActivity {
     ImageView imageFlag;
     @BindView(R.id.text_title)
     TextView textTitle;
-
     @BindView(R.id.text_curr_btc)
     TextView currBTCText;
     @BindView(R.id.text_curr_eth)
@@ -158,38 +160,51 @@ public class CalculatorActivity extends AppCompatActivity {
         if (country.refreshedAt > fiveMinsBefore)
             return;
 
-        Call<Exchange> call = ApiClient.getApi().getPrice(country.code, "BTC,ETH");
-        call.enqueue(new Callback<Exchange>() {
-            @Override
-            public void onResponse(@NonNull Call<Exchange> call,
-                                   @NonNull Response<Exchange> response) {
+        ApiClient.getApi().getPrice(country.code, "BTC,ETH")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .to(AutoDispose.with(this).forSingle())
+                .subscribe(response -> {
+                    HttpUrl url = response.raw().request().url();
+                    String from = url.queryParameter(Api.FROM_SYMBOL);
 
-                HttpUrl url = call.request().url();
-                String from = url.queryParameter(Api.FROM_SYMBOL);
+                    if (TextUtils.isEmpty(from)) {
+                        return;
+                    }
 
-                if (TextUtils.isEmpty(from)) {
-                    return;
-                }
+                    Exchange exchange = response.body();
+                    if (exchange == null) {
+                        return;
+                    }
 
-                Exchange exchange = response.body();
-                if (exchange == null) {
-                    return;
-                }
+                    if (ObjectsCompat.equals(country.code, from)) {
+                        int btcStatus = Country.SAME;
+                        if (country.btc != -1) {
+                            if (exchange.bitcoin > country.btc) {
+                                btcStatus = Country.RISE;
+                            } else if (exchange.bitcoin < country.btc) {
+                                btcStatus = Country.DROP;
+                            }
+                        }
 
-                if (ObjectsCompat.equals(country.code, from)) {
-                    country.eth = exchange.ethereum;
-                    country.btc = exchange.bitcoin;
-                    country.refreshedAt = System.currentTimeMillis();
-                    countryBox.put(country);
-                    finishSetup();
-                }
-            }
+                        int ethStatus = Country.SAME;
+                        if (country.eth != -1) {
+                            if (exchange.bitcoin > country.btc) {
+                                ethStatus = Country.RISE;
+                            } else if (exchange.bitcoin < country.btc) {
+                                ethStatus = Country.DROP;
+                            }
+                        }
+                        country.btcStatus = btcStatus;
+                        country.ethStatus = ethStatus;
 
-            @Override
-            public void onFailure(@NonNull Call<Exchange> call, @NonNull Throwable t) {
-                Log.e("Card", call.request().url().toString(), t);
-            }
-        });
+                        country.eth = exchange.ethereum;
+                        country.btc = exchange.bitcoin;
+                        country.refreshedAt = System.currentTimeMillis();
+                        countryBox.put(country);
+                        finishSetup();
+                    }
+                }, Timber::e);
     }
 
     private float getFloat(EditText editText) {
@@ -197,19 +212,11 @@ public class CalculatorActivity extends AppCompatActivity {
         try {
             value = Float.parseFloat(editText.getText().toString());
         } catch (Exception e) {
-            Log.e("Exchanger", e.getMessage());
+            Timber.e(e);
             value = 0f;
         }
 
         return value;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
+

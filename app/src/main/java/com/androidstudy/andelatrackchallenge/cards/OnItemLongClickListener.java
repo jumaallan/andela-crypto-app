@@ -1,4 +1,4 @@
-package com.androidstudy.andelatrackchallenge;
+package com.androidstudy.andelatrackchallenge.cards;
 
 /**
  * Created by anonymous on 11/1/17.

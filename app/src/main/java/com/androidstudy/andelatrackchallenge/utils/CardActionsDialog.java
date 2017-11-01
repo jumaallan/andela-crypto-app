@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidstudy.andelatrackchallenge.OnCardActionListener;
+import com.androidstudy.andelatrackchallenge.cards.OnCardActionListener;
 import com.androidstudy.andelatrackchallenge.R;
 import com.androidstudy.andelatrackchallenge.models.Country;
 

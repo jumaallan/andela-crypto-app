@@ -1,10 +1,12 @@
 package com.androidstudy.andelatrackchallenge.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.androidstudy.andelatrackchallenge.OnItemLongClickListener;
+import com.androidstudy.andelatrackchallenge.cards.OnItemLongClickListener;
 import com.androidstudy.andelatrackchallenge.R;
 import com.androidstudy.andelatrackchallenge.models.Country;
 import com.androidstudy.andelatrackchallenge.utils.CurrencyUtils;
@@ -24,21 +26,23 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by anonymous on 10/17/17.
  */
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> {
     public static final String BITCOIN = "BITCOIN";
     public static final String ETHEREUM = "ETHEREUM";
     public static final String CODE = "CODE";
 
+    private View emptyView;
     private OnItemClickListener<Country> onItemClickListener;
     private OnItemLongClickListener<Country> onItemLongClickListener;
     private List<Country> countries;
 
-    public CardAdapter() {
+    public CardsAdapter() {
         countries = new ArrayList<>();
     }
 
@@ -48,6 +52,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
 
     public void setOnItemLongClickListener(OnItemLongClickListener<Country> onItemLongClickListener) {
         this.onItemLongClickListener = onItemLongClickListener;
+    }
+
+    public void setEmptyView(View emptyView) {
+        this.emptyView = emptyView;
+    }
+
+    private void showEmptyView(boolean show) {
+        if (emptyView != null) {
+            emptyView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 
     public List<Country> getCountries() {
@@ -63,8 +77,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
         // EmptyList from Collections.emptyList()
         if (countries == null || countries.size() == 0) {
             this.countries.clear();
+            showEmptyView(true);
         } else {
             this.countries = countries;
+            showEmptyView(false);
         }
         notifyDataSetChanged();
     }
@@ -74,6 +90,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
         for (Country country : countries) {
             if (country == null) continue;
             this.countries.add(country);
+            showEmptyView(false);
             notifyItemInserted(this.countries.size() - 1);
         }
     }
@@ -98,6 +115,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
             countries.remove(country);
             notifyItemRemoved(index);
         }
+
+        showEmptyView(countries.size() == 0);
     }
 
     @Override
@@ -139,6 +158,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
         TextView ethTextView;
         @BindView(R.id.button_overflow)
         ImageButton overflowButton;
+        @BindView(R.id.icon_btc_price)
+        ImageView btcPriceIcon;
+        @BindView(R.id.icon_eth_price)
+        ImageView ethPriceIcon;
 
         public CardHolder(View itemView) {
             super(itemView);
@@ -175,7 +198,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
 
             float btcCountry = 1.0f / country.btc;
             float ethCountry = 1.0f / country.eth;
-            Log.e("CardAdapter", country.toString());
+            Timber.e(country.toString());
 
             btcTextView.setText(country.btc > 0
                     ? String.format(Locale.getDefault(), currencyFormat, country.code, CurrencyUtils.format.format(btcCountry))
@@ -184,15 +207,36 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardHolder> {
             ethTextView.setText(country.eth > 0
                     ? String.format(Locale.getDefault(), currencyFormat, country.code, CurrencyUtils.format.format(ethCountry))
                     : "...");
+
+            // Is BTC/ETH price rising or dropping? Reflect it to user
+            setPriceIcon(btcPriceIcon, country.btcStatus);
+            setPriceIcon(ethPriceIcon, country.ethStatus);
+        }
+
+        private void setPriceIcon(ImageView imageView, int status) {
+            switch (status) {
+                case Country.RISE:
+                    imageView.setImageResource(R.drawable.ic_arrow_rise);
+                    break;
+                case Country.SAME:
+                    imageView.setImageResource(R.drawable.ic_same);
+                    break;
+                case Country.DROP:
+                    Context context = imageView.getContext();
+                    Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_arrow_drop);
+                    DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.color_price_drop));
+                    imageView.setImageDrawable(drawable);
+                    break;
+            }
         }
 
         public void bind(Bundle bundle) {
             Context context = itemView.getContext();
             String currencyFormat = context.getString(R.string.text_currency_units);
 
-            float btc = bundle.getFloat(CardAdapter.BITCOIN, -1);
-            float eth = bundle.getFloat(CardAdapter.ETHEREUM, -1);
-            String code = bundle.getString(CardAdapter.CODE, "");
+            float btc = bundle.getFloat(CardsAdapter.BITCOIN, -1);
+            float eth = bundle.getFloat(CardsAdapter.ETHEREUM, -1);
+            String code = bundle.getString(CardsAdapter.CODE, "");
             float btcCountry = 1.0f / btc;
             float ethCountry = 1.0f / eth;
 

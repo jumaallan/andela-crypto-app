@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.util.DiffUtil;
 
-import com.androidstudy.andelatrackchallenge.adapter.CardAdapter;
+import com.androidstudy.andelatrackchallenge.adapter.CardsAdapter;
 import com.androidstudy.andelatrackchallenge.models.Country;
 
 import java.util.List;
@@ -57,12 +57,12 @@ public class CountryDiffUtil extends DiffUtil.Callback {
         Country newCountry = newCountries.get(newItemPosition);
 
         Bundle bundle = new Bundle();
-        bundle.putString(CardAdapter.CODE, newCountry.code);
+        bundle.putString(CardsAdapter.CODE, newCountry.code);
 
         if (oldCountry.btc != newCountry.btc)
-            bundle.putFloat(CardAdapter.BITCOIN, newCountry.btc);
+            bundle.putFloat(CardsAdapter.BITCOIN, newCountry.btc);
         if (oldCountry.btc != newCountry.btc)
-            bundle.putFloat(CardAdapter.ETHEREUM, newCountry.eth);
+            bundle.putFloat(CardsAdapter.ETHEREUM, newCountry.eth);
 
         return bundle;
     }

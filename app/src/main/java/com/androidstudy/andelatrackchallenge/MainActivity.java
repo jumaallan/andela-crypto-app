@@ -5,18 +5,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ObjectsCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.androidstudy.andelatrackchallenge.adapter.CardAdapter;
+import com.androidstudy.andelatrackchallenge.adapter.CardsAdapter;
+import com.androidstudy.andelatrackchallenge.cards.OnCardActionListener;
+import com.androidstudy.andelatrackchallenge.cards.OnItemLongClickListener;
 import com.androidstudy.andelatrackchallenge.models.Country;
 import com.androidstudy.andelatrackchallenge.models.Country_;
 import com.androidstudy.andelatrackchallenge.models.Exchange;
@@ -26,6 +27,7 @@ import com.androidstudy.andelatrackchallenge.network.ApiClient;
 import com.androidstudy.andelatrackchallenge.picker.currency.Countries;
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerFragment;
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerListener;
+import com.androidstudy.andelatrackchallenge.settings.SettingsActivity;
 import com.androidstudy.andelatrackchallenge.utils.CardActionsDialog;
 import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
 import com.androidstudy.andelatrackchallenge.settings.Settings;
@@ -38,6 +40,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.uber.autodispose.AutoDispose;
 
 import java.util.List;
 
@@ -46,12 +49,12 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
+public class MainActivity extends RxActivity implements GoogleApiClient.OnConnectionFailedListener,
         CurrencyPickerListener, OnItemClickListener<Country>, OnCardActionListener, OnItemLongClickListener<Country> {
 
     @BindView(R.id.toolbar)
@@ -60,29 +63,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     FloatingActionButton fab;
     @BindView(R.id.profile_image)
     CircleImageView mProfileImage;
-    @BindView(R.id.view_empty)
+    @BindView(R.id.layout_empty)
     View emptyView;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private CurrencyPickerFragment pickerFragment;
-    private CardAdapter adapter;
+    private CardsAdapter adapter;
     private Box<User> userBox;
     private Box<Country> countryBox;
     private User user;
-    private Settings settings;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_cards);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
 
         pickerFragment = CurrencyPickerFragment.newInstance(Countries.countries);
-        settings = new Settings(this.getApplicationContext());
 
         BoxStore boxStore = ((AndelaTrackChallenge) getApplicationContext()).getBoxStore();
         userBox = boxStore.boxFor(User.class);
@@ -116,9 +119,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //Toast welcome message
         Toast.makeText(this, "Welcome " + user.name, Toast.LENGTH_SHORT).show();
 
-        adapter = new CardAdapter();
+        adapter = new CardsAdapter();
         adapter.setOnItemClickListener(this);
         adapter.setOnItemLongClickListener(this);
+        adapter.setEmptyView(emptyView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -129,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             adapter.setCountries(all);
             loadRates(all);
         }
+
+        swipeRefreshLayout.setOnRefreshListener(() -> loadRates(adapter.getCountries()));
     }
 
     private void loadRates(List<Country> countries) {
@@ -136,46 +142,61 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             loadRate(country);
     }
 
-    private void loadRate(Country country) {
+    private void loadRate(Country c) {
         long fiveMinsBefore = System.currentTimeMillis() - (10 * 60 * 1000);
-        if (country.refreshedAt > fiveMinsBefore)
+        if (c.refreshedAt > fiveMinsBefore)
             return;
 
-        Call<Exchange> call = ApiClient.getApi().getPrice(country.code, "BTC,ETH");
-        call.enqueue(new Callback<Exchange>() {
-            @Override
-            public void onResponse(@NonNull Call<Exchange> call,
-                                   @NonNull Response<Exchange> response) {
+        ApiClient.getApi().getPrice(c.code, "BTC,ETH")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(d -> swipeRefreshLayout.setRefreshing(true))
+                .doAfterTerminate(() -> swipeRefreshLayout.setRefreshing(false))
+                .to(AutoDispose.with(this).forSingle())
+                .subscribe(response -> {
+                    HttpUrl url = response.raw().request().url();
+                    String from = url.queryParameter(Api.FROM_SYMBOL);
 
-                HttpUrl url = call.request().url();
-                String from = url.queryParameter(Api.FROM_SYMBOL);
-
-                if (TextUtils.isEmpty(from)) {
-                    return;
-                }
-
-                Exchange exchange = response.body();
-                if (exchange == null) {
-                    return;
-                }
-
-                List<Country> countries = adapter.getCountries();
-                for (Country country : countries) {
-                    if (ObjectsCompat.equals(country.code, from)) {
-                        country.eth = exchange.ethereum;
-                        country.btc = exchange.bitcoin;
-                        country.refreshedAt = System.currentTimeMillis();
-                        countryBox.put(country);
-                        adapter.replace(country);
+                    if (TextUtils.isEmpty(from)) {
+                        return;
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<Exchange> call, @NonNull Throwable t) {
-                Log.e("Card", call.request().url().toString(), t);
-            }
-        });
+                    Exchange exchange = response.body();
+                    if (exchange == null) {
+                        return;
+                    }
+
+                    List<Country> countries = adapter.getCountries();
+                    for (Country country : countries) {
+                        if (ObjectsCompat.equals(country.code, from)) {
+                            int btcStatus = Country.SAME;
+                            if (country.btc != -1) {
+                                if (exchange.bitcoin > country.btc) {
+                                    btcStatus = Country.RISE;
+                                } else if (exchange.bitcoin < country.btc) {
+                                    btcStatus = Country.DROP;
+                                }
+                            }
+
+                            int ethStatus = Country.SAME;
+                            if (country.eth != -1) {
+                                if (exchange.bitcoin > country.btc) {
+                                    ethStatus = Country.RISE;
+                                } else if (exchange.bitcoin < country.btc) {
+                                    ethStatus = Country.DROP;
+                                }
+                            }
+                            country.btcStatus = btcStatus;
+                            country.ethStatus = ethStatus;
+
+                            country.eth = exchange.ethereum;
+                            country.btc = exchange.bitcoin;
+                            country.refreshedAt = System.currentTimeMillis();
+                            countryBox.put(country);
+                            adapter.replace(country);
+                        }
+                    }
+                }, Timber::e);
     }
 
     @Override
@@ -191,41 +212,37 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        boolean facebook = settings.isFacebook();
+        boolean facebook = Settings.isFacebook();
 
         if (id == R.id.action_signout) {
             if (facebook) {
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        status -> {
-                            //Clear Shared Pref File
-                            settings.setLoggedInSharedPref(false);
-
-                            //Clear Local DB
-                            userBox.removeAll();
-
-                            //Redirect User to Login Page
-                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        });
-            } else {
                 new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, graphResponse -> {
-
                     LoginManager.getInstance().logOut();
-
                     //Clear Shared Pref File
-                    settings.setLoggedInSharedPref(false);
-
+                    Settings.setLoggedInSharedPref(false);
                     //Clear Local DB
                     userBox.removeAll();
-
                     //Redirect User to Login Page
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
 
                 }).executeAsync();
+            } else {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(status -> {
+                    //Clear Shared Pref File
+                    Settings.setLoggedInSharedPref(false);
+                    //Clear Local DB
+                    userBox.removeAll();
+                    //Redirect User to Login Page
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
             }
+            return true;
+        } else if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 

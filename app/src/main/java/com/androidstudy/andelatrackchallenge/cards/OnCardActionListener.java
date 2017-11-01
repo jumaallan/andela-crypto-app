@@ -1,4 +1,4 @@
-package com.androidstudy.andelatrackchallenge;
+package com.androidstudy.andelatrackchallenge.cards;
 
 import com.androidstudy.andelatrackchallenge.models.Country;
 
