@@ -61,6 +61,7 @@ dependencies {
 
     //Handle Images
     implementation deps.glide.glide
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor deps.glide.compiler
     implementation deps.glide.okhttp3
 
