@@ -19,5 +19,9 @@
     <string name="slide_3_desc">Get the latest exchange rates!</string>
 
     <string name="text_currency_units">%s %s</string>
+    <string name="text_currency_unit">%.2f</string>
+    <string name="action_delete">Delete</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="ethereum">Ethereum</string>
 
 </resources>
