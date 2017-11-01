@@ -26,6 +26,7 @@ import com.androidstudy.andelatrackchallenge.network.ApiClient;
 import com.androidstudy.andelatrackchallenge.picker.currency.Countries;
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerFragment;
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerListener;
+import com.androidstudy.andelatrackchallenge.utils.CardActionsDialog;
 import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
 import com.androidstudy.andelatrackchallenge.utils.Settings;
 import com.bumptech.glide.Glide;
@@ -50,8 +51,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener, CurrencyPickerListener, OnItemClickListener<Country> {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
+        CurrencyPickerListener, OnItemClickListener<Country>, OnCardActionListener, OnItemLongClickListener<Country> {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -115,7 +116,9 @@ public class MainActivity extends AppCompatActivity implements
         //Toast welcome message
         Toast.makeText(this, "Welcome " + user.name, Toast.LENGTH_SHORT).show();
 
-        adapter = new CardAdapter(this);
+        adapter = new CardAdapter();
+        adapter.setOnItemClickListener(this);
+        adapter.setOnItemLongClickListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -253,8 +256,26 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClick(Country item, int position) {
-        Intent intent = new Intent(this, ExchangeCalculatorActivity.class);
-        intent.putExtra(ExchangeCalculatorActivity.COUNTRY, item);
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra(CalculatorActivity.COUNTRY, item);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemLongClick(Country item, int position) {
+        CardActionsDialog actionsDialog = CardActionsDialog.newInstance(item);
+        actionsDialog.show(getSupportFragmentManager(), "card-actions");
+    }
+
+    @Override
+    public void onRemoved(Country country) {
+        countryBox.remove(country);
+        adapter.remove(country);
+        Toast.makeText(this, "Removed " + country.name, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEdited(Country country) {
+        // open editing
     }
 }

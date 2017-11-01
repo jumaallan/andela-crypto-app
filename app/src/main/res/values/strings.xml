@@ -17,11 +17,15 @@
 
     <string name="slide_3_title">Exchange Rates</string>
     <string name="slide_3_desc">Get the latest exchange rates!</string>
-
     <string name="text_currency_units">%s %s</string>
     <string name="text_currency_unit">%.2f</string>
     <string name="action_delete">Delete</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="ethereum">Ethereum</string>
 
+    <!--THEME-->
+    <string name="preference_category_ui">User Interface</string>
+    <string name="preference_theme">Theme</string>
+    <string name="action_settings">Settings</string>
+    <string name="activity_settings_title">Settings</string>
 </resources>

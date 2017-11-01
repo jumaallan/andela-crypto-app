@@ -25,7 +25,7 @@ import io.objectbox.Box;
 public class CurrencyPickerFragment extends DialogFragment implements OnItemClickListener<Country> {
     private static final String COUNTRIES = "COUNTRIES";
 
-    private com.androidstudy.andelatrackchallenge.picker.currency.CurrencyAdapter adapter;
+    private CurrencyAdapter adapter;
     private LinearLayoutManager layoutManager;
     private CurrencyPickerListener pickerListener;
 
@@ -50,7 +50,7 @@ public class CurrencyPickerFragment extends DialogFragment implements OnItemClic
         else
             dismiss();
 
-        adapter = new com.androidstudy.andelatrackchallenge.picker.currency.CurrencyAdapter(countries, this);
+        adapter = new CurrencyAdapter(countries, this);
         layoutManager = new LinearLayoutManager(getActivity());
         Box<Country> countryBox = ((AndelaTrackChallenge) getActivity().getApplicationContext()).getBoxStore().boxFor(Country.class);
         countryBox.query().build()

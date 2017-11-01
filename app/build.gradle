@@ -48,44 +48,34 @@ dependencies {
     implementation deps.support.recyclerView
     implementation deps.support.design
     implementation deps.support.constraintLayout
-
     //Check Internet Status
     implementation deps.networkManager
-
     //Network/HTTP Calls
     implementation deps.okhttp.core
     implementation deps.okhttp.loggingInterceptor
     implementation deps.retrofit2.retrofit
     implementation deps.moshi
     implementation deps.retrofit2.converterMoshi
-
     //Handle Images
     implementation deps.glide.glide
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor deps.glide.compiler
     implementation deps.glide.okhttp3
-
     //Bind our Views
     implementation deps.butterknife.butterknife
     annotationProcessor deps.butterknife.compiler
-
     //Local DB
     implementation deps.objectbox.android
     annotationProcessor deps.objectbox.processor
-
     //Facebook SDK
     implementation deps.facebookSDK
-
     //Google Login SDK
     implementation deps.playServices.auth
-
     //Circular Profile ImageView
     implementation deps.circleImageView
-
     //Sweet Alert Dialog
     implementation deps.sweetAlert
     implementation deps.materialDialogs.core
-
     testImplementation deps.jUnit
     androidTestImplementation(deps.espresso.core, {
         exclude group: 'com.android.support', module: 'support-annotations'

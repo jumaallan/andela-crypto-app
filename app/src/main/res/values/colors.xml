@@ -44,6 +44,11 @@
         <item>@color/dot_dark_screen4</item>
     </array>
 
+    <color name="card_color">#424242</color>
+    <color name="card_color_light">#ffffff</color>
+
     <color name="inline_icon">#9e9e9e</color>
     <color name="divider">#b99e9e9e</color>
+    <color name="color_price_drop">#ff1744</color>
+    <color name="color_price_rise">#00c853</color>
 </resources>
