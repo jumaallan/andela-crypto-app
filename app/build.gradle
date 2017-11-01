@@ -47,35 +47,58 @@ dependencies {
     implementation deps.support.palette
     implementation deps.support.recyclerView
     implementation deps.support.design
+    implementation deps.support.preferencesV7
+    implementation deps.support.preferencesV14
     implementation deps.support.constraintLayout
+    implementation deps.support.multiDex
+
     //Check Internet Status
     implementation deps.networkManager
+
     //Network/HTTP Calls
     implementation deps.okhttp.core
     implementation deps.okhttp.loggingInterceptor
     implementation deps.retrofit2.retrofit
     implementation deps.moshi
     implementation deps.retrofit2.converterMoshi
+    implementation deps.retrofit2.adapterRxjava2
+
+    // RxJava
+    implementation deps.rxjava2
+    implementation deps.rxandroid2
+    implementation deps.autoDispose.core
+    implementation deps.autoDispose.android
+
     //Handle Images
-    implementation deps.glide.glide
+    implementation deps.glide.core
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor deps.glide.compiler
     implementation deps.glide.okhttp3
+
     //Bind our Views
     implementation deps.butterknife.butterknife
     annotationProcessor deps.butterknife.compiler
+
     //Local DB
     implementation deps.objectbox.android
     annotationProcessor deps.objectbox.processor
+
     //Facebook SDK
     implementation deps.facebookSDK
+
     //Google Login SDK
     implementation deps.playServices.auth
+
     //Circular Profile ImageView
     implementation deps.circleImageView
+
     //Sweet Alert Dialog
     implementation deps.sweetAlert
     implementation deps.materialDialogs.core
+
+    // logging
+    implementation deps.timber
+
     testImplementation deps.jUnit
     androidTestImplementation(deps.espresso.core, {
         exclude group: 'com.android.support', module: 'support-annotations'

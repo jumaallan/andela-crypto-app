@@ -1,4 +1,4 @@
-package com.androidstudy.andelatrackchallenge.utils;
+package com.androidstudy.andelatrackchallenge.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;

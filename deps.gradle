@@ -2,20 +2,25 @@ def versions = [
         supportLib      : '26.1.0',
         constraintLayout: '1.0.2',
         playServices    : '11.4.2',
+        multiDex        : '1.0.2',
         networkManager  : '0.0.2',
         gson            : '2.8.2',
         moshi           : '1.5.0',
         okhttp          : '3.9.0',
         retrofit2       : '2.3.0',
-        glide           : '4.2.0',
+        glide           : '4.3.0',
         butterknife     : '8.8.1',
-        objectbox       : '1.0.1',
+        objectbox       : '1.2.0',
         materialDialogs : '0.9.4.7',
         facebookSDK     : '4.27.0',
         cicleImageView  : '2.1.0',
         sweetAlert      : '1.3',
         jUnit           : '4.12',
         espresso        : '3.0.1',
+        autoDispose     : '0.4.0',
+        rxjava2         : '2.1.6',
+        rxandroid2      : '2.0.1',
+        timber          : '4.6.0',
 ]
 
 ext.versions = versions
@@ -29,7 +34,10 @@ ext.deps = [
                 palette         : 'com.android.support:palette-v7:' + versions.supportLib,
                 recyclerView    : 'com.android.support:recyclerview-v7:' + versions.supportLib,
                 design          : 'com.android.support:design:' + versions.supportLib,
+                preferencesV7   : 'com.android.support:preference-v7:' + versions.supportLib,
+                preferencesV14  : 'com.android.support:preference-v14:' + versions.supportLib,
                 constraintLayout: 'com.android.support.constraint:constraint-layout:' + versions.constraintLayout,
+                multiDex        : 'com.android.support:multidex:' + versions.multiDex,
         ],
 
         playServices   : [
@@ -47,10 +55,11 @@ ext.deps = [
         retrofit2      : [
                 retrofit      : 'com.squareup.retrofit2:retrofit:' + versions.retrofit2,
                 converterGson : 'com.squareup.retrofit2:converter-gson:' + versions.retrofit2,
-                converterMoshi: 'com.squareup.retrofit2:converter-moshi:' + versions.retrofit2
+                converterMoshi: 'com.squareup.retrofit2:converter-moshi:' + versions.retrofit2,
+                adapterRxjava2: 'com.squareup.retrofit2:adapter-rxjava2:' + versions.retrofit2,
         ],
         glide          : [
-                glide   : 'com.github.bumptech.glide:glide:' + versions.glide,
+                core    : 'com.github.bumptech.glide:glide:' + versions.glide,
                 compiler: 'com.github.bumptech.glide:compiler:' + versions.glide,
                 okhttp3 : 'com.github.bumptech.glide:okhttp3-integration:' + versions.glide,
         ],
@@ -64,9 +73,18 @@ ext.deps = [
                 android  : 'io.objectbox:objectbox-android:' + versions.objectbox,
                 processor: 'io.objectbox:objectbox-processor:' + versions.objectbox,
         ],
+
+        rxjava2        : 'io.reactivex.rxjava2:rxjava:' + versions.rxjava2,
+        rxandroid2     : 'io.reactivex.rxjava2:rxandroid:' + versions.rxandroid2,
+        autoDispose    : [
+                core   : 'com.uber.autodispose:autodispose:' + versions.autoDispose,
+                android: 'com.uber.autodispose:autodispose-android:' + versions.autoDispose,
+        ],
+
         materialDialogs: [
                 core: 'com.afollestad.material-dialogs:core:' + versions.materialDialogs,
         ],
+        timber         : 'com.jakewharton.timber:timber:' + versions.timber,
         facebookSDK    : 'com.facebook.android:facebook-android-sdk:' + versions.facebookSDK,
         circleImageView: 'de.hdodenhof:circleimageview:' + versions.cicleImageView,
         sweetAlert     : 'cn.pedant.sweetalert:library:' + versions.sweetAlert,

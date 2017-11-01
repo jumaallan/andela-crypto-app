@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.androidstudy.andelatrackchallenge.utils.Settings;
+import com.androidstudy.andelatrackchallenge.settings.Settings;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

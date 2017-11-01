@@ -28,7 +28,7 @@ import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerFragm
 import com.androidstudy.andelatrackchallenge.picker.currency.CurrencyPickerListener;
 import com.androidstudy.andelatrackchallenge.utils.CardActionsDialog;
 import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
-import com.androidstudy.andelatrackchallenge.utils.Settings;
+import com.androidstudy.andelatrackchallenge.settings.Settings;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;

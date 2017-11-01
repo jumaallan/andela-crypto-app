@@ -10,8 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.androidstudy.andelatrackchallenge.models.User;
-import com.androidstudy.andelatrackchallenge.utils.Settings;
-import com.bumptech.glide.Glide;
+import com.androidstudy.andelatrackchallenge.settings.Settings;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
