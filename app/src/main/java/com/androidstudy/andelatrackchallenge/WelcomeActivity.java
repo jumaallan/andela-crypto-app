@@ -23,7 +23,7 @@ import com.androidstudy.andelatrackchallenge.settings.Settings;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends BaseActivity {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
@@ -37,7 +37,6 @@ public class WelcomeActivity extends AppCompatActivity {
     private MyViewPagerAdapter myViewPagerAdapter;
     private TextView[] dots;
     private int[] layouts;
-    private Settings settings;
 
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -78,7 +77,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         ButterKnife.bind(this);
-        settings = new Settings(this.getApplicationContext());
 
         // layouts of all welcome sliders
         // add few more layouts if you want
@@ -98,25 +96,17 @@ public class WelcomeActivity extends AppCompatActivity {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchHomeScreen();
-            }
-        });
+        btnSkip.setOnClickListener(v -> launchHomeScreen());
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
-                int current = getItem(+1);
-                if (current < layouts.length) {
-                    // move to next screen
-                    viewPager.setCurrentItem(current);
-                } else {
-                    launchHomeScreen();
-                }
+        btnNext.setOnClickListener(v -> {
+            // checking for last page
+            // if last page home screen will be launched
+            int current = getItem(+1);
+            if (current < layouts.length) {
+                // move to next screen
+                viewPager.setCurrentItem(current);
+            } else {
+                launchHomeScreen();
             }
         });
     }
@@ -145,7 +135,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-        settings.setFirstTimeLaunch(false);
+        Settings.setFirstTimeLaunch(false);
         startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
         finish();
     }
@@ -165,8 +155,8 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //Fetching the boolean value form shared preferences
-        boolean loggedIn = settings.isLoggedIn();
-        boolean isFirstTime = settings.isFirstTimeLaunch();
+        boolean loggedIn = Settings.isLoggedIn();
+        boolean isFirstTime = Settings.isFirstTimeLaunch();
 
         if (!isFirstTime) {
             //If we will get true

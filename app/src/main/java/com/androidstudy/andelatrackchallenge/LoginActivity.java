@@ -32,20 +32,18 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.objectbox.Box;
+import timber.log.Timber;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.mFacebookLogin)
     LoginButton mFacebookLogin;
     @BindView(R.id.mGoogleLogin)
     SignInButton mGoogleLogin;
 
-    Settings settings;
     Box<User> userBox;
-
     private CallbackManager callbackManager;
-    private static final String TAG = "Log";
-    private static final int RC_SIGN_IN = 1;
+    private static final int RC_SIGN_IN = 121;
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -57,7 +55,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
-        settings = new Settings(this.getApplicationContext());
         userBox = ((AndelaTrackChallenge) getApplicationContext()).getBoxStore().boxFor(User.class);
         callbackManager = CallbackManager.Factory.create();
         // Configure sign-in to request the user's ID, email address, and basic
@@ -91,54 +88,44 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        mGoogleLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                googleSignIn();
-            }
-        });
+        mGoogleLogin.setOnClickListener(v -> googleSignIn());
     }
 
     private void loadUserData(final LoginResult loginResult) {
         GraphRequest request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
+                (object, response) -> {
 
-                        Log.i("Response ", response.toString());
+                    Timber.i(response.toString());
 
-                        // Application code
-                        try {
-                            String name = response.getJSONObject().getString("name");
-                            String image_url = "http://graph.facebook.com/" + loginResult.getAccessToken().getUserId() +"/picture?type=large";
+                    // Application code
+                    try {
+                        String name = response.getJSONObject().getString("name");
+                        String image_url = "http://graph.facebook.com/" + loginResult.getAccessToken().getUserId() + "/picture?type=large";
 
-                            /**
-                             * Save to ObjectBox ORM
-                             * Set the Logged in status to true
-                             * Navigate user to Main Activity
-                             */
-                            User user = new User();
-                            user.name = name;
-                            user.image_url = image_url;
-                            userBox.put(user);
+                        /*
+                         * Save to ObjectBox ORM
+                         * Set the Logged in status to true
+                         * Navigate user to Main Activity
+                         */
+                        User user = new User();
+                        user.name = name;
+                        user.image_url = image_url;
+                        userBox.put(user);
 
-                            Log.d("Users", "Total Users : " + userBox.count());
+                        Timber.d("Total Users : %d", userBox.count());
 
-                            settings.setLoggedInSharedPref(true);
-                            settings.setIsFacebook(true);
+                        Settings.setLoggedInSharedPref(true);
+                        Settings.setIsFacebook(true);
 
-                            Intent login = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(login);
-                            finish();
+                        Intent login = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(login);
+                        finish();
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
                 });
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,name,link");
@@ -165,37 +152,36 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        Timber.d("handleSignInResult:" + result.isSuccess() + " " + result.getStatus());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             assert acct != null;
 
             String name = acct.getDisplayName();
-            String image_url = String.valueOf(acct.getPhotoUrl());
+            String imageUrl = String.valueOf(acct.getPhotoUrl());
 
-            /**
+            /*
              * Save to ObjectBox ORM
              * Set the Logged in status to true
              * Navigate user to Main Activity
              */
             User user = new User();
             user.name = name;
-            user.image_url = image_url;
+            user.image_url = imageUrl;
             userBox.put(user);
 
-            Log.d("Users", "Total Users : " + userBox.count());
+            Timber.d("Total Users : %d", userBox.count());
 
-            settings.setLoggedInSharedPref(true);
-            settings.setIsFacebook(false);
+            Settings.setLoggedInSharedPref(true);
+            Settings.setIsFacebook(false);
 
-            Intent login = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(login);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
             finish();
 
         } else {
             // Signed out, show unauthenticated UI.
-
         }
     }
 
@@ -204,4 +190,3 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 }
-

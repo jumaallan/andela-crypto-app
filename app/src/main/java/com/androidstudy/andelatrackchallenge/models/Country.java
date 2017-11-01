@@ -13,6 +13,10 @@ import io.objectbox.annotation.Id;
 
 @Entity
 public class Country implements Parcelable {
+    public static final int RISE = 1;
+    public static final int SAME = 0;
+    public static final int DROP = -1;
+
     @Id
     long id;
     @DrawableRes
@@ -20,6 +24,8 @@ public class Country implements Parcelable {
     public String name;
     public String currency;
     public String code;
+    public int ethStatus = SAME;
+    public int btcStatus = SAME;
 
     // set after exchange rate is got from crypto-compare api
     // -1 means not set
@@ -119,4 +125,3 @@ public class Country implements Parcelable {
                 '}';
     }
 }
-

@@ -25,7 +25,7 @@
     },
     {
       "id": "2:5083141721050936711",
-      "lastPropertyId": "8:4589791566915318930",
+      "lastPropertyId": "10:8686360575349551641",
       "name": "Country",
       "properties": [
         {
@@ -59,6 +59,14 @@
         {
           "id": "8:4589791566915318930",
           "name": "refreshedAt"
+        },
+        {
+          "id": "9:3212234506523731478",
+          "name": "ethStatus"
+        },
+        {
+          "id": "10:8686360575349551641",
+          "name": "btcStatus"
         }
       ],
       "relations": []
