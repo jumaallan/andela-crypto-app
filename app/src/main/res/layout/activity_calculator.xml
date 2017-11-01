@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="@dimen/card_list_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_list_margin"
+                android:foreground="?selectableItemBackground"
+                app:cardBackgroundColor="?cardColor"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false"
+                app:contentPadding="@dimen/padding_normal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/padding_medium"
+                        android:text="Bitcoin"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="BTC"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="@dimen/padding_normal"
+                            android:layout_height="0dp" />
+
+                        <EditText
+                            android:id="@+id/edit_bitcoin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/calculator_bg"
+                            android:inputType="numberDecimal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="@dimen/padding_medium"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/ic_equal" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/text_curr_btc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            tools:text="USD" />
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="@dimen/padding_normal"
+                            android:layout_height="0dp" />
+
+                        <EditText
+                            android:id="@+id/edit_curr_btc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/calculator_bg"
+                            android:inputType="numberDecimal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_list_margin"
+                android:foreground="?selectableItemBackground"
+                app:cardBackgroundColor="?cardColor"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false"
+                app:contentPadding="@dimen/padding_normal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/padding_medium"
+                        android:text="Ethereum"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ETH"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="@dimen/padding_normal"
+                            android:layout_height="0dp" />
+
+                        <EditText
+                            android:id="@+id/edit_eth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/calculator_bg"
+                            android:inputType="numberDecimal"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="@dimen/padding_medium"
+                        android:contentDescription="@null"
+                        app:srcCompat="@drawable/ic_equal" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/text_curr_eth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            tools:text="USD" />
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="@dimen/padding_normal"
+                            android:layout_height="0dp" />
+
+                        <EditText
+                            android:id="@+id/edit_curr_eth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/calculator_bg"
+                            android:inputType="numberDecimal"
+                            android:minEms="4"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <LinearLayout
+                android:id="@+id/back_menu_ll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/image_flag"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:gravity="left"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+</android.support.design.widget.CoordinatorLayout>
