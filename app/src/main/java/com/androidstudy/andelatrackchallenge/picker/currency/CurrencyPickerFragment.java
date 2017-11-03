@@ -10,9 +10,8 @@ import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidstudy.andelatrackchallenge.AndelaTrackChallenge;
-import com.androidstudy.andelatrackchallenge.adapter.CurrencyAdapter;
 import com.androidstudy.andelatrackchallenge.models.Country;
-import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
+import com.androidstudy.andelatrackchallenge.cards.OnItemClickListener;
 
 import java.util.ArrayList;
 

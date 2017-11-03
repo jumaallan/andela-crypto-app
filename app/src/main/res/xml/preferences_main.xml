@@ -8,5 +8,11 @@
             android:key="THEME"
             android:title="@string/preference_theme" />
 
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="COLORED_CARDS"
+            android:summary="@string/preference_show_colored_cards_summary"
+            android:title="@string/preference_show_colored_cards" />
+
     </android.support.v7.preference.PreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>

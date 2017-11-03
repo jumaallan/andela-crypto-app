@@ -7,6 +7,8 @@ import com.androidstudy.andelatrackchallenge.models.Country;
  */
 
 public interface OnCardActionListener {
+    void onToggleStar(Country country);
+
     void onRemoved(Country country);
 
     void onEdited(Country country);

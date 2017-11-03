@@ -18,7 +18,7 @@ public class Country implements Parcelable {
     public static final int DROP = -1;
 
     @Id
-    long id;
+    public long id;
     @DrawableRes
     public int flagRes;
     public String name;
@@ -32,6 +32,7 @@ public class Country implements Parcelable {
     public float btc = -1f;
     public float eth = -1f;
     public long refreshedAt = -1L;
+    public boolean isFavorite = false;
 
     public Country() {
     }
@@ -48,9 +49,12 @@ public class Country implements Parcelable {
         currency = in.readString();
         code = in.readString();
         flagRes = in.readInt();
+        btcStatus = in.readInt();
+        ethStatus = in.readInt();
         btc = in.readFloat();
         eth = in.readFloat();
         refreshedAt = in.readLong();
+        isFavorite = in.readInt() != 0;
     }
 
     public static final Creator<Country> CREATOR = new Creator<Country>() {
@@ -76,9 +80,12 @@ public class Country implements Parcelable {
         parcel.writeString(currency);
         parcel.writeString(code);
         parcel.writeInt(flagRes);
+        parcel.writeInt(btcStatus);
+        parcel.writeInt(ethStatus);
         parcel.writeFloat(btc);
         parcel.writeFloat(eth);
         parcel.writeLong(refreshedAt);
+        parcel.writeInt(isFavorite ? 1 : 0);
     }
 
     @Override
@@ -92,9 +99,12 @@ public class Country implements Parcelable {
         if (flagRes != country.flagRes) return false;
         if (Float.compare(country.btc, btc) != 0) return false;
         if (Float.compare(country.eth, eth) != 0) return false;
+        if (country.ethStatus != ethStatus) return false;
+        if (country.btcStatus != btcStatus) return false;
         if (refreshedAt != country.refreshedAt) return false;
         if (!name.equals(country.name)) return false;
         if (!currency.equals(country.currency)) return false;
+        if (!country.isFavorite == isFavorite) return false;
         return code.equals(country.code);
     }
 
@@ -105,9 +115,12 @@ public class Country implements Parcelable {
         result = 31 * result + name.hashCode();
         result = 31 * result + currency.hashCode();
         result = 31 * result + code.hashCode();
+        result = 31 * result + btcStatus;
+        result = 31 * result + ethStatus;
         result = 31 * result + (btc != +0.0f ? Float.floatToIntBits(btc) : 0);
         result = 31 * result + (eth != +0.0f ? Float.floatToIntBits(eth) : 0);
         result = 31 * result + (int) (refreshedAt ^ (refreshedAt >>> 32));
+        result = 31 * result + (isFavorite ? 1 : 0);
         return result;
     }
 
@@ -119,9 +132,12 @@ public class Country implements Parcelable {
                 ", name='" + name + '\'' +
                 ", currency='" + currency + '\'' +
                 ", code='" + code + '\'' +
+                ", ethStatus=" + ethStatus +
+                ", btcStatus=" + btcStatus +
                 ", btc=" + btc +
                 ", eth=" + eth +
                 ", refreshedAt=" + refreshedAt +
+                ", isFavorite=" + isFavorite +
                 '}';
     }
 }

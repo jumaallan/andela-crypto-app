@@ -1,4 +1,4 @@
-package com.androidstudy.andelatrackchallenge.utils;
+package com.androidstudy.andelatrackchallenge.cards;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidstudy.andelatrackchallenge.cards.OnCardActionListener;
 import com.androidstudy.andelatrackchallenge.R;
 import com.androidstudy.andelatrackchallenge.models.Country;
 
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class CardActionsDialog extends BottomSheetDialogFragment {
     private static final String COUNTRY = "COUNTRY";
-    private OnCardActionListener onCardActionListener;
+    private static OnCardActionListener onCardActionListener;
 
     @BindView(R.id.text_view_name)
     TextView nameText;
@@ -31,15 +30,18 @@ public class CardActionsDialog extends BottomSheetDialogFragment {
     TextView codeText;
     @BindView(R.id.image_view_flag)
     ImageView flagImage;
+    @BindView(R.id.text_view_pin)
+    TextView pinText;
     @BindView(R.id.text_view_edit)
     TextView editText;
     @BindView(R.id.text_view_delete)
     TextView deleteText;
 
-    public static CardActionsDialog newInstance(Country country) {
+    public static CardActionsDialog newInstance(Country country, OnCardActionListener listener) {
         Bundle args = new Bundle();
         args.putParcelable(COUNTRY, country);
         CardActionsDialog fragment = new CardActionsDialog();
+        onCardActionListener = listener;
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,13 +67,24 @@ public class CardActionsDialog extends BottomSheetDialogFragment {
             nameText.setText(country.name);
             codeText.setText(country.code);
             flagImage.setImageResource(country.flagRes);
+
+            pinText.setText(country.isFavorite ? "Unpin item" : "Pin item to top");
+            pinText.setCompoundDrawablesWithIntrinsicBounds(
+                    country.isFavorite ? R.drawable.ic_star : R.drawable.ic_star_border,
+                    0,
+                    0,
+                    0);
+
+            pinText.setOnClickListener(v -> {
+                onCardActionListener.onToggleStar(country);
+                dismiss();
+            });
+
             editText.setOnClickListener(v -> {
-                Toast.makeText(getActivity(), "Editing...", Toast.LENGTH_SHORT).show();
                 onCardActionListener.onEdited(country);
                 dismiss();
             });
             deleteText.setOnClickListener(v -> {
-                Toast.makeText(getActivity(), "Deleting...", Toast.LENGTH_SHORT).show();
                 onCardActionListener.onRemoved(country);
                 dismiss();
             });
@@ -79,4 +92,3 @@ public class CardActionsDialog extends BottomSheetDialogFragment {
         return view;
     }
 }
-

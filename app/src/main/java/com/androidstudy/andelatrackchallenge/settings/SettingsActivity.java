@@ -8,11 +8,12 @@ import android.support.v7.widget.Toolbar;
 
 import com.androidstudy.andelatrackchallenge.BaseActivity;
 import com.androidstudy.andelatrackchallenge.R;
+import com.androidstudy.andelatrackchallenge.ThemableActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends ThemableActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 

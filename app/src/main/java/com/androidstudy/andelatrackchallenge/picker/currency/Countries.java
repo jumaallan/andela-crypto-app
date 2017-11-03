@@ -36,4 +36,3 @@ public class Countries {
         countries.add(new Country("Nigeria", "Naira", "NGN", R.drawable.flag_ng));
     }
 }
-

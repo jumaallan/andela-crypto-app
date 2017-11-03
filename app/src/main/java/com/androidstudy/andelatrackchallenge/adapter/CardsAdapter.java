@@ -1,11 +1,16 @@
 package com.androidstudy.andelatrackchallenge.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.ObjectsCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +19,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidstudy.andelatrackchallenge.cards.CardActionsDialog;
+import com.androidstudy.andelatrackchallenge.cards.OnCardActionListener;
 import com.androidstudy.andelatrackchallenge.cards.OnItemLongClickListener;
 import com.androidstudy.andelatrackchallenge.R;
 import com.androidstudy.andelatrackchallenge.models.Country;
+import com.androidstudy.andelatrackchallenge.settings.Settings;
 import com.androidstudy.andelatrackchallenge.utils.CurrencyUtils;
-import com.androidstudy.andelatrackchallenge.utils.OnItemClickListener;
+import com.androidstudy.andelatrackchallenge.cards.OnItemClickListener;
+import com.androidstudy.andelatrackchallenge.utils.Easel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +51,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
 
     private View emptyView;
     private OnItemClickListener<Country> onItemClickListener;
-    private OnItemLongClickListener<Country> onItemLongClickListener;
+    private OnCardActionListener onCardActionListener;
     private List<Country> countries;
 
     public CardsAdapter() {
@@ -50,8 +62,8 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener<Country> onItemLongClickListener) {
-        this.onItemLongClickListener = onItemLongClickListener;
+    public void setOnCardActionListener(OnCardActionListener onCardActionListener) {
+        this.onCardActionListener = onCardActionListener;
     }
 
     public void setEmptyView(View emptyView) {
@@ -80,6 +92,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
             showEmptyView(true);
         } else {
             this.countries = countries;
+            Collections.sort(this.countries, comparator);
             showEmptyView(false);
         }
         notifyDataSetChanged();
@@ -105,6 +118,17 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
                 break;
             }
         }
+    }
+
+    public void moveToPosition(Country country) {
+        replace(country);
+
+        int fromPosition = countries.indexOf(country);
+        Collections.sort(countries, comparator);
+        int toPosition = countries.indexOf(country);
+
+        notifyItemMoved(fromPosition, toPosition);
+        notifyItemChanged(toPosition);
     }
 
     public void remove(Country country) {
@@ -143,11 +167,31 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
     }
 
     @Override
+    public void onViewRecycled(CardHolder holder) {
+        super.onViewRecycled(holder);
+        holder.unbind();
+    }
+
+    @Override
     public int getItemCount() {
         return countries.size();
     }
 
+    private Comparator<Country> comparator = (lhs, rhs) -> {
+        if (lhs.isFavorite && rhs.isFavorite) {
+            return (int) (lhs.id - rhs.id);
+        } else if (rhs.isFavorite) {
+            return 1;
+        } else if (lhs.isFavorite) {
+            return -1;
+        } else {
+            return (int) (lhs.id - rhs.id);
+        }
+    };
+
     public class CardHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.card_currency)
+        CardView cardCurrency;
         @BindView(R.id.text_view_currency_title)
         TextView titleTextView;
         @BindView(R.id.image_view_currency_flag)
@@ -156,12 +200,20 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
         TextView btcTextView;
         @BindView(R.id.text_view_eth)
         TextView ethTextView;
+        @BindView(R.id.text_view_btc_label)
+        TextView btcLabelTextView;
+        @BindView(R.id.text_view_eth_label)
+        TextView ethLabelTextView;
         @BindView(R.id.button_overflow)
         ImageButton overflowButton;
+        @BindView(R.id.image_star)
+        ImageView starImage;
         @BindView(R.id.icon_btc_price)
         ImageView btcPriceIcon;
         @BindView(R.id.icon_eth_price)
         ImageView ethPriceIcon;
+
+        private String signature = "";
 
         public CardHolder(View itemView) {
             super(itemView);
@@ -174,24 +226,32 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
                 }
             });
             itemView.setOnLongClickListener(v -> {
-                if (onItemLongClickListener != null) {
-                    int position = getAdapterPosition();
-                    onItemLongClickListener.onItemLongClick(getCountries().get(position), position);
+                if (onCardActionListener != null) {
+                    CardActionsDialog actionsDialog = CardActionsDialog
+                            .newInstance(countries.get(getAdapterPosition()), onCardActionListener);
+                    actionsDialog.show(
+                            ((AppCompatActivity) itemView.getContext()).getSupportFragmentManager(),
+                            "card-actions");
                     return true;
                 }
                 return false;
             });
             overflowButton.setOnClickListener(v -> {
-                if (onItemLongClickListener != null) {
-                    int position = getAdapterPosition();
-                    onItemLongClickListener.onItemLongClick(getCountries().get(position), position);
+                if (onCardActionListener != null) {
+                    CardActionsDialog actionsDialog = CardActionsDialog
+                            .newInstance(countries.get(getAdapterPosition()), onCardActionListener);
+                    actionsDialog.show(
+                            ((AppCompatActivity) itemView.getContext()).getSupportFragmentManager(),
+                            "card-actions");
                 }
             });
         }
 
         public void bind(Country country) {
+            signature = country.toString();
             titleTextView.setText(country.name);
             flagImageView.setImageResource(country.flagRes);
+            starImage.setVisibility(country.isFavorite ? View.VISIBLE : View.GONE);
 
             Context context = itemView.getContext();
             String currencyFormat = context.getString(R.string.text_currency_units);
@@ -211,6 +271,41 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
             // Is BTC/ETH price rising or dropping? Reflect it to user
             setPriceIcon(btcPriceIcon, country.btcStatus);
             setPriceIcon(ethPriceIcon, country.ethStatus);
+
+            if (Settings.isShowColoredCards()) {
+                loadCardColor(country);
+            }
+        }
+
+        private void loadCardColor(Country country) {
+            Context context = itemView.getContext();
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), country.flagRes);
+            Palette.from(bitmap)
+                    .maximumColorCount(4)
+                    .generate(palette -> {
+                        if (!ObjectsCompat.equals(signature, country.toString())) {
+                            return;
+                        }
+                        Palette.Swatch swatch = palette.getDarkVibrantSwatch();
+                        if (swatch == null) {
+                            swatch = palette.getLightVibrantSwatch();
+                        }
+                        if (swatch == null) {
+                            swatch = new Palette.Swatch(Easel.getThemeAttrColor(context, R.attr.cardColor), 4);
+                        }
+
+                        cardCurrency.setCardBackgroundColor(Easel.getDarkerColor(swatch.getRgb(), 0.9f));
+                        titleTextView.setTextColor(swatch.getTitleTextColor());
+                        int bodyTextColor = swatch.getBodyTextColor();
+
+                        ButterKnife.apply(
+                                Arrays.asList(btcTextView, ethTextView, btcLabelTextView, ethLabelTextView),
+                                (ButterKnife.Action<TextView>) (view, index) ->
+                                        view.setTextColor(bodyTextColor));
+
+                        overflowButton.setImageDrawable(Easel
+                                .tint(overflowButton.getDrawable(), bodyTextColor));
+                    });
         }
 
         private void setPriceIcon(ImageView imageView, int status) {
@@ -253,7 +348,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
             titleTextView.setText("");
             btcTextView.setText("");
             ethTextView.setText("");
-
         }
     }
 }

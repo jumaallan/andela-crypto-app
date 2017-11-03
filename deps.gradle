@@ -77,8 +77,9 @@ ext.deps = [
         rxjava2        : 'io.reactivex.rxjava2:rxjava:' + versions.rxjava2,
         rxandroid2     : 'io.reactivex.rxjava2:rxandroid:' + versions.rxandroid2,
         autoDispose    : [
-                core   : 'com.uber.autodispose:autodispose:' + versions.autoDispose,
-                android: 'com.uber.autodispose:autodispose-android:' + versions.autoDispose,
+                core       : 'com.uber.autodispose:autodispose:' + versions.autoDispose,
+                android    : 'com.uber.autodispose:autodispose-android:' + versions.autoDispose,
+                androidArch: 'com.uber.autodispose:autodispose-android-archcomponents:' + versions.autoDispose,
         ],
 
         materialDialogs: [

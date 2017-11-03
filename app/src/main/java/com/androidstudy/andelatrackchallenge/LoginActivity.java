@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 import io.objectbox.Box;
 import timber.log.Timber;
 
-public class LoginActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends ThemableActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.mFacebookLogin)
     LoginButton mFacebookLogin;
@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                          */
                         User user = new User();
                         user.name = name;
-                        user.image_url = image_url;
+                        user.imageUrl = image_url;
                         userBox.put(user);
 
                         Timber.d("Total Users : %d", userBox.count());
@@ -168,7 +168,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
              */
             User user = new User();
             user.name = name;
-            user.image_url = imageUrl;
+            user.imageUrl = imageUrl;
             userBox.put(user);
 
             Timber.d("Total Users : %d", userBox.count());
@@ -190,3 +190,4 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     }
 }
+

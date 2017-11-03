@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_currency"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_list_margin"
@@ -37,15 +38,28 @@
 
             <TextView
                 android:id="@+id/text_view_currency_title"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/padding_normal"
+                android:layout_marginEnd="@dimen/padding_medium"
                 android:layout_marginLeft="@dimen/padding_normal"
-                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_medium"
                 android:layout_marginStart="@dimen/padding_normal"
-                android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 tools:text="US Dollar" />
+
+            <ImageView
+                android:id="@+id/image_star"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_star"
+                tools:visibility="visible" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <ImageButton
                 android:id="@+id/button_overflow"
@@ -64,6 +78,7 @@
             android:padding="@dimen/padding_normal">
 
             <TextView
+                android:id="@+id/text_view_btc_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bitcoin"
@@ -108,6 +123,7 @@
             android:padding="@dimen/padding_normal">
 
             <TextView
+                android:id="@+id/text_view_eth_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"

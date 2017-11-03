@@ -87,4 +87,8 @@ public class Settings {
                 .putString("THEME", String.valueOf(themeIndex))
                 .apply();
     }
+
+    public static boolean isShowColoredCards() {
+        return defaultPrefs.getBoolean("COLORED_CARDS", false);
+    }
 }

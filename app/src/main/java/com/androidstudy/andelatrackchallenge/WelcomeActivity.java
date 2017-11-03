@@ -23,7 +23,7 @@ import com.androidstudy.andelatrackchallenge.settings.Settings;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WelcomeActivity extends BaseActivity {
+public class WelcomeActivity extends ThemableActivity {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;

@@ -1,5 +1,6 @@
 package com.androidstudy.andelatrackchallenge;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,57 +26,17 @@ import static com.androidstudy.andelatrackchallenge.ActivityEvent.STOP;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-    public static final int[] themes = {R.style.AppTheme, R.style.AppTheme_Light};
-
-    private int themeIndex = Settings.themeIndex();
-    private BehaviorSubject<ActivityEvent> lifecycle = BehaviorSubject.create();
-
-    @Override
-    protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
-        super.onApplyThemeResource(theme, getThemeRes(), first);
-    }
-
-    protected Maybe<?> until(ActivityEvent event) {
-        return lifecycle.filter(e -> e == event).firstElement();
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        lifecycle.onNext(CREATE);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        lifecycle.onNext(START);
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        lifecycle.onNext(RESUME);
-        if (themeIndex != Settings.themeIndex()) {
-            recreate();
+        if (shouldRestart()) {
+            startActivity(new Intent(this, this.getClass()));
+            finish();
+
+            // using recreate() causes a bug where the back button does not respond to being
+            // clicked!
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        lifecycle.onNext(PAUSE);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        lifecycle.onNext(STOP);
-    }
-
-    @Override
-    protected void onDestroy() {
-        lifecycle.onNext(DESTROY);
-        super.onDestroy();
     }
 
     @Override
@@ -87,13 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @StyleRes
-    private int getThemeRes() {
-        try {
-            return themes[themeIndex];
-        } catch (Exception e) {
-            Timber.e(e);
-            return themes[0];
-        }
+    protected boolean shouldRestart() {
+        return false;
     }
 }

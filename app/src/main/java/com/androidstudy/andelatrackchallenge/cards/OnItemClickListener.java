@@ -1,4 +1,4 @@
-package com.androidstudy.andelatrackchallenge.utils;
+package com.androidstudy.andelatrackchallenge.cards;
 
 /**
  * Created by anonymous on 10/17/17.
@@ -6,4 +6,5 @@ package com.androidstudy.andelatrackchallenge.utils;
 
 public interface OnItemClickListener<T> {
     void onItemClick(T item, int position);
+
 }
