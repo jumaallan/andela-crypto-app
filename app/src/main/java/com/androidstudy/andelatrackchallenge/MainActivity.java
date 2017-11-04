@@ -5,16 +5,19 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidstudy.andelatrackchallenge.adapter.CardsAdapter;
@@ -46,6 +49,8 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.tingyik90.snackprogressbar.SnackProgressBar;
+import com.tingyik90.snackprogressbar.SnackProgressBarManager;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
@@ -63,12 +68,16 @@ import timber.log.Timber;
 
 public class MainActivity extends ThemableActivity implements CurrencyPickerListener,
         OnItemClickListener<Country>, OnCardActionListener, GoogleApiClient.OnConnectionFailedListener {
+    @BindView(R.id.coordinator_layout)
+    CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.layout_empty)
     View emptyView;
+    @BindView(R.id.text_empty)
+    TextView emptyText;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh)
@@ -77,7 +86,7 @@ public class MainActivity extends ThemableActivity implements CurrencyPickerList
     private GoogleApiClient mGoogleApiClient;
     private boolean isShowColoredCards = Settings.isShowColoredCards();
 
-    private CurrencyPickerFragment pickerFragment;
+    private SnackProgressBarManager snackProgressBarManager;
     private ProfileDialog profileDialog;
     private CardsAdapter adapter;
     private Box<Country> countryBox;
@@ -92,13 +101,12 @@ public class MainActivity extends ThemableActivity implements CurrencyPickerList
 
         setSupportActionBar(toolbar);
 
-        pickerFragment = CurrencyPickerFragment.newInstance(Countries.countries);
-        profileDialog = ProfileDialog.newInstance(((dialog, which) -> logout()));
-
         BoxStore boxStore = ((AndelaTrackChallenge) getApplicationContext()).getBoxStore();
         userBox = boxStore.boxFor(User.class);
         countryBox = boxStore.boxFor(Country.class);
         user = userBox.query().build().findFirst();
+
+        profileDialog = ProfileDialog.newInstance(((dialog, which) -> logout()));
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -113,15 +121,18 @@ public class MainActivity extends ThemableActivity implements CurrencyPickerList
                 .build();
         init();
 
-        fab.setOnClickListener(v -> pickerFragment.show(MainActivity.this.getSupportFragmentManager(), "currency-picker"));
+        fab.setOnClickListener(v ->
+                CurrencyPickerFragment
+                        .newInstance(countryBox.getAll())
+                        .show(MainActivity.this.getSupportFragmentManager(), "currency-picker"));
+
+        snackProgressBarManager = new SnackProgressBarManager(coordinatorLayout)
+                .setProgressBarColor(R.color.colorAccent)
+                .setOverlayLayoutAlpha(0.6f);
     }
 
     private void init() {
-        //Toast welcome message
-        Toast.makeText(
-                this,
-                (Settings.isFirstTimeLaunch() ? "Welcome, " : "Welcome back, ") + user.name,
-                Toast.LENGTH_SHORT).show();
+        emptyText.setText(Html.fromHtml(getString(R.string.text_empty_message)));
 
         adapter = new CardsAdapter();
         adapter.setOnItemClickListener(this);
@@ -154,6 +165,21 @@ public class MainActivity extends ThemableActivity implements CurrencyPickerList
     }
 
     private void logout() {
+        if (!Settings.isLoggedIn()) {
+            return;
+        }
+
+        SnackProgressBar snackProgressBar = new SnackProgressBar(
+                SnackProgressBar.TYPE_INDETERMINATE,
+                "Logging out...")
+                .setSwipeToDismiss(false);
+
+        fab.hide();
+        fab.setClickable(false);
+        // Show snack progress during logout
+        snackProgressBarManager.dismissAll();
+        snackProgressBarManager.show(snackProgressBar, SnackProgressBarManager.LENGTH_INDEFINITE);
+
         boolean facebook = Settings.isFacebook();
         if (facebook) {
             new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, graphResponse -> {
@@ -180,6 +206,9 @@ public class MainActivity extends ThemableActivity implements CurrencyPickerList
                 finish();
             });
         }
+
+        //Unreachable anyway
+        snackProgressBarManager.dismiss();
     }
 
     @Override
@@ -248,8 +277,8 @@ public class MainActivity extends ThemableActivity implements CurrencyPickerList
 
     @Override
     public void onItemClick(Country item, int position) {
-        Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra(CalculatorActivity.COUNTRY, item);
+        Intent intent = new Intent(this, ConverterActivity.class);
+        intent.putExtra(ConverterActivity.COUNTRY, item);
         startActivity(intent);
     }
 

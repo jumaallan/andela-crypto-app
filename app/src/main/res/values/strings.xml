@@ -19,6 +19,7 @@
     <string name="slide_3_desc">Get the latest exchange rates!</string>
     <string name="text_currency_units">%s %s</string>
     <string name="text_currency_unit">%.2f</string>
+    <string name="text_currency_unit_3dp">%.3f</string>
     <string name="action_delete">Delete</string>
     <string name="bitcoin">Bitcoin</string>
     <string name="ethereum">Ethereum</string>
@@ -29,6 +30,11 @@
     <string name="preference_show_colored_cards_summary">EXPERIMENTAL! Color is extracted from the parent country flag.
     </string>
     <string name="preference_show_colored_cards">Show colored cards</string>
+
+    <string name="preference_category_converter">Converter</string>
+    <string name="preference_show_3_decimal_places">Show 3 decimal places</string>
+    <string name="preference_show_3_decimal_places_summary">Calculate conversion results to 3 instead of 2 decimal places</string>
+
     <string name="action_settings">Settings</string>
     <string name="activity_settings_title">Settings</string>
     <string name="action_profile">Profile</string>
@@ -36,5 +42,13 @@
         When signed in:
         \n\n&#8226; Your cards list will be saved and restored when you sign in again.
         \n\n&#8226; App preferences will be persisted across app installs.
+    </string>
+    <string name="calc_bitcoin">BTC, Bitcoin</string>
+    <string name="calc_ethereum">ETH, Ethereum</string>
+    <string name="calc_currency">%1$s, %2$s</string>
+    <string name="text_spark_line_title">%1$s &#8226; %2$s</string>
+    <string name="text_empty_message"><![CDATA[
+        No cards added. Tap the <font color=\'#FF4081\'>+</font> button to add one now.
+        ]]>
     </string>
 </resources>

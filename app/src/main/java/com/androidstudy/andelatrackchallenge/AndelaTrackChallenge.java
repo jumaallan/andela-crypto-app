@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 
+import com.androidstudy.andelatrackchallenge.cards.HistoryRepository;
 import com.androidstudy.andelatrackchallenge.models.MyObjectBox;
 import com.androidstudy.andelatrackchallenge.settings.Settings;
 import com.facebook.FacebookSdk;
@@ -25,7 +26,8 @@ public class AndelaTrackChallenge extends MultiDexApplication {
      */
     public static final boolean EXTERNAL_DIR = false;
 
-    private BoxStore boxStore;
+    private static BoxStore boxStore;
+    private static HistoryRepository historyRepo;
 
     @Override
     public void onCreate() {
@@ -47,9 +49,15 @@ public class AndelaTrackChallenge extends MultiDexApplication {
             // This is the minimal setup required on Android
             boxStore = MyObjectBox.builder().androidContext(this).build();
         }
+
+        historyRepo = new HistoryRepository(this, boxStore);
     }
 
     public BoxStore getBoxStore() {
         return boxStore;
+    }
+
+    public HistoryRepository getHistoryRepo() {
+        return historyRepo;
     }
 }

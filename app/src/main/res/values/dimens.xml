@@ -3,7 +3,7 @@
     <dimen name="dots_height">30dp</dimen>
     <dimen name="dots_margin_bottom">20dp</dimen>
     <dimen name="img_width_height">150dp</dimen>
-    <dimen name="slide_title">30dp</dimen>
+    <dimen name="slide_title_text_size">30sp</dimen>
     <dimen name="slide_desc">16sp</dimen>
     <dimen name="desc_padding">40dp</dimen>
     <dimen name="padding_normal">16dp</dimen>
@@ -15,4 +15,5 @@
     <dimen name="padding_empty_bottom">56dp</dimen>
     <dimen name="crypto_coin_height">40dp</dimen>
     <dimen name="content_inset">72dp</dimen>
+    <dimen name="key_height">80dp</dimen>
 </resources>

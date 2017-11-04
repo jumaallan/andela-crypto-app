@@ -15,12 +15,6 @@ import io.reactivex.Maybe;
 import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-import static com.androidstudy.andelatrackchallenge.ActivityEvent.CREATE;
-import static com.androidstudy.andelatrackchallenge.ActivityEvent.DESTROY;
-import static com.androidstudy.andelatrackchallenge.ActivityEvent.PAUSE;
-import static com.androidstudy.andelatrackchallenge.ActivityEvent.RESUME;
-import static com.androidstudy.andelatrackchallenge.ActivityEvent.START;
-import static com.androidstudy.andelatrackchallenge.ActivityEvent.STOP;
 
 /**
  * Created by anonymous on 11/2/17.

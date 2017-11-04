@@ -11,13 +11,13 @@ import timber.log.Timber;
  * Created by anonymous on 11/2/17.
  */
 
-public class ThemableActivity extends BaseActivity {
+public abstract class ThemableActivity extends BaseActivity {
     public static final int[] themes = {R.style.AppTheme, R.style.AppTheme_Light};
     private int themeIndex = Settings.themeIndex();
 
     @Override
     protected void onApplyThemeResource(Resources.Theme theme, int resid, boolean first) {
-        super.onApplyThemeResource(theme, getThemeRes(), first);
+        super.onApplyThemeResource(theme, getThemeRes(themeIndex), first);
     }
 
     @Override
@@ -26,9 +26,9 @@ public class ThemableActivity extends BaseActivity {
     }
 
     @StyleRes
-    private int getThemeRes() {
+    protected int getThemeRes(int index) {
         try {
-            return themes[themeIndex];
+            return themes[index];
         } catch (Exception e) {
             Timber.e(e);
             return themes[0];

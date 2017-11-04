@@ -11,10 +11,10 @@ def versions = [
         glide           : '4.3.0',
         butterknife     : '8.8.1',
         objectbox       : '1.2.0',
+        objectboxRxjava : '0.9.8',
         materialDialogs : '0.9.4.7',
         facebookSDK     : '4.27.0',
-        cicleImageView  : '2.1.0',
-        sweetAlert      : '1.3',
+        cicleImageView  : '2.2.0',
         jUnit           : '4.12',
         espresso        : '3.0.1',
         autoDispose     : '0.4.0',
@@ -23,12 +23,14 @@ def versions = [
         timber          : '4.6.0',
         spark           : '1.1.2',
         state           : '1.1.6',
+        snackProgressBar: '2.2',
+        materialPB      : '1.4.2',
 ]
 
 ext.versions = versions
 
 ext.deps = [
-        support        : [
+        support         : [
                 appCompat       : 'com.android.support:appcompat-v7:' + versions.supportLib,
                 supportV13      : 'com.android.support:support-v13:' + versions.supportLib,
                 customTabs      : 'com.android.support:customtabs:' + versions.supportLib,
@@ -42,64 +44,65 @@ ext.deps = [
                 multiDex        : 'com.android.support:multidex:' + versions.multiDex,
         ],
 
-        playServices   : [
+        playServices    : [
                 auth: 'com.google.android.gms:play-services-auth:' + versions.playServices
         ],
 
-        networkManager : 'com.github.jumadeveloper:networkmanager:' + versions.networkManager,
+        networkManager  : 'com.github.jumadeveloper:networkmanager:' + versions.networkManager,
 
-        gson           : 'com.google.code.gson:gson:' + versions.gson,
-        moshi          : 'com.squareup.moshi:moshi:' + versions.moshi,
-        okhttp         : [
+        moshi           : 'com.squareup.moshi:moshi:' + versions.moshi,
+        okhttp          : [
                 core              : 'com.squareup.okhttp3:okhttp:' + versions.okhttp,
                 loggingInterceptor: 'com.squareup.okhttp3:logging-interceptor:' + versions.okhttp,
         ],
-        retrofit2      : [
-                retrofit      : 'com.squareup.retrofit2:retrofit:' + versions.retrofit2,
-                converterGson : 'com.squareup.retrofit2:converter-gson:' + versions.retrofit2,
-                converterMoshi: 'com.squareup.retrofit2:converter-moshi:' + versions.retrofit2,
-                adapterRxjava2: 'com.squareup.retrofit2:adapter-rxjava2:' + versions.retrofit2,
+        retrofit2       : [
+                retrofit: 'com.squareup.retrofit2:retrofit:' + versions.retrofit2,
+                moshi   : 'com.squareup.retrofit2:converter-moshi:' + versions.retrofit2,
+                rxjava2 : 'com.squareup.retrofit2:adapter-rxjava2:' + versions.retrofit2,
         ],
-        glide          : [
+        glide           : [
                 core    : 'com.github.bumptech.glide:glide:' + versions.glide,
                 compiler: 'com.github.bumptech.glide:compiler:' + versions.glide,
                 okhttp3 : 'com.github.bumptech.glide:okhttp3-integration:' + versions.glide,
         ],
 
-        butterknife    : [
+        butterknife     : [
                 butterknife: 'com.jakewharton:butterknife:' + versions.butterknife,
                 compiler   : 'com.jakewharton:butterknife-compiler:' + versions.butterknife,
         ],
 
-        objectbox      : [
-                android  : 'io.objectbox:objectbox-android:' + versions.objectbox,
-                processor: 'io.objectbox:objectbox-processor:' + versions.objectbox,
+        objectbox       : [
+                androidDebug  : 'io.objectbox:objectbox-android-objectbrowser:' + versions.objectbox,
+                androidRelease: 'io.objectbox:objectbox-android:' + versions.objectbox,
+                processor     : 'io.objectbox:objectbox-processor:' + versions.objectbox,
+                rxjava        : 'io.objectbox:objectbox-rxjava:' + versions.objectboxRxjava,
         ],
 
-        rxjava2        : 'io.reactivex.rxjava2:rxjava:' + versions.rxjava2,
-        rxandroid2     : 'io.reactivex.rxjava2:rxandroid:' + versions.rxandroid2,
-        autoDispose    : [
+        rxjava2         : 'io.reactivex.rxjava2:rxjava:' + versions.rxjava2,
+        rxandroid2      : 'io.reactivex.rxjava2:rxandroid:' + versions.rxandroid2,
+        autoDispose     : [
                 core       : 'com.uber.autodispose:autodispose:' + versions.autoDispose,
                 android    : 'com.uber.autodispose:autodispose-android:' + versions.autoDispose,
                 androidArch: 'com.uber.autodispose:autodispose-android-archcomponents:' + versions.autoDispose,
         ],
 
-        materialDialogs: [
+        materialDialogs : [
                 core: 'com.afollestad.material-dialogs:core:' + versions.materialDialogs,
         ],
-        state          : [
+        state           : [
                 core     : 'com.evernote:android-state:' + versions.state,
                 processor: 'com.evernote:android-state-processor:' + versions.state,
         ],
 
-        timber         : 'com.jakewharton.timber:timber:' + versions.timber,
-        facebookSDK    : 'com.facebook.android:facebook-android-sdk:' + versions.facebookSDK,
-        circleImageView: 'de.hdodenhof:circleimageview:' + versions.cicleImageView,
-        sweetAlert     : 'cn.pedant.sweetalert:library:' + versions.sweetAlert,
-        spark          : 'com.robinhood.spark:spark:' + versions.spark,
+        snackProgressBar: 'com.github.tingyik90:snackprogressbar:' + versions.snackProgressBar,
+        timber          : 'com.jakewharton.timber:timber:' + versions.timber,
+        facebookSDK     : 'com.facebook.android:facebook-android-sdk:' + versions.facebookSDK,
+        circleImageView : 'de.hdodenhof:circleimageview:' + versions.cicleImageView,
+        spark           : 'com.robinhood.spark:spark:' + versions.spark,
+        materialPB      : 'me.zhanghai.android.materialprogressbar:library:' + versions.materialPB,
 
-        jUnit          : 'junit:junit:' + versions.jUnit,
-        espresso       : [
+        jUnit           : 'junit:junit:' + versions.jUnit,
+        espresso        : [
                 core: 'com.android.support.test.espresso:espresso-core:' + versions.espresso,
         ],
 ]

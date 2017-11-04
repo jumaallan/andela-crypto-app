@@ -15,22 +15,26 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.androidstudy.andelatrackchallenge"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs "en"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            shrinkResources true
+            minifyEnabled true
+            multiDexKeepProguard file('multidex-config.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.defaultConfig
         }
         debug {
-            //signingConfig signingConfigs.defaultConfig
+//            signingConfig signingConfigs.defaultConfig
+//            multiDexKeepProguard file('multidex-config.pro')
         }
     }
     compileOptions {
@@ -60,8 +64,8 @@ dependencies {
     implementation deps.okhttp.loggingInterceptor
     implementation deps.retrofit2.retrofit
     implementation deps.moshi
-    implementation deps.retrofit2.converterMoshi
-    implementation deps.retrofit2.adapterRxjava2
+    implementation deps.retrofit2.moshi
+    implementation deps.retrofit2.rxjava2
 
     // RxJava
     implementation deps.rxjava2
@@ -75,17 +79,17 @@ dependencies {
     annotationProcessor deps.glide.compiler
     implementation deps.glide.okhttp3
 
-    //Bind our Views
+    // Bind our Views
     implementation deps.butterknife.butterknife
     annotationProcessor deps.butterknife.compiler
 
-    //Local DB
-    implementation deps.objectbox.android
+    // Local DB
+    implementation deps.objectbox.androidRelease
     annotationProcessor deps.objectbox.processor
 
-    //Facebook SDK
+    // Facebook SDK
     implementation deps.facebookSDK
-    //Google Login SDK
+    // Google Login SDK
     implementation deps.playServices.auth
 
     // State saving/restoring
@@ -95,12 +99,13 @@ dependencies {
     // Draw simple spark-lines
     implementation deps.spark
 
-    //Circular Profile ImageView
+    // Circular Profile ImageView
     implementation deps.circleImageView
 
-    //Sweet Alert Dialog
-    implementation deps.sweetAlert
+    // Material Dialogs alt alert dialogs
     implementation deps.materialDialogs.core
+    // Progress SnackBar
+    implementation deps.snackProgressBar
 
     // logging
     implementation deps.timber

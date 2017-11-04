@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.androidstudy.andelatrackchallenge.MainActivity">
@@ -26,18 +27,19 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/padding_normal"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
-            android:id="@+id/image_view_flag"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:id="@+id/image_empty"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:contentDescription="@null"
-            tools:src="@drawable/ic_empty" />
+            android:src="@drawable/ic_empty" />
 
         <TextView
-            android:id="@+id/text_view_name"
+            android:id="@+id/text_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
@@ -45,7 +47,7 @@
             android:gravity="center_horizontal"
             android:padding="@dimen/padding_normal"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            tools:text="No cards added.\nTap the + button to add one now." />
+            tools:text="@string/text_empty_message" />
     </FrameLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout

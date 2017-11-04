@@ -14,6 +14,7 @@ import com.androidstudy.andelatrackchallenge.models.Country;
 import com.androidstudy.andelatrackchallenge.cards.OnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.objectbox.Box;
 
@@ -28,9 +29,18 @@ public class CurrencyPickerFragment extends DialogFragment implements OnItemClic
     private LinearLayoutManager layoutManager;
     private CurrencyPickerListener pickerListener;
 
-    public static CurrencyPickerFragment newInstance(ArrayList<Country> countries) {
+
+    /**
+     * @param countries is the list of countries for which to disable picking
+     * @return a new instance of {@link CurrencyPickerFragment}
+     */
+    public static CurrencyPickerFragment newInstance(List<Country> countries) {
         Bundle args = new Bundle();
-        args.putParcelableArrayList(COUNTRIES, countries);
+        if (countries instanceof ArrayList) {
+            args.putParcelableArrayList(COUNTRIES, (ArrayList<Country>) countries);
+        } else {
+            args.putParcelableArrayList(COUNTRIES, new ArrayList<>());
+        }
 
         CurrencyPickerFragment fragment = new CurrencyPickerFragment();
         fragment.setArguments(args);
@@ -40,21 +50,17 @@ public class CurrencyPickerFragment extends DialogFragment implements OnItemClic
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList<Country> countries = getArguments().getParcelableArrayList(COUNTRIES);
-        // close dialog if country1 list is null
-        if (countries == null) dismiss();
+        ArrayList<Country> disabled = getArguments().getParcelableArrayList(COUNTRIES);
 
         if (getActivity() instanceof CurrencyPickerListener)
             pickerListener = (CurrencyPickerListener) getActivity();
         else
             dismiss();
 
-        adapter = new CurrencyAdapter(countries, this);
+        adapter = new CurrencyAdapter(Countries.countries, disabled);
         layoutManager = new LinearLayoutManager(getActivity());
-        Box<Country> countryBox = ((AndelaTrackChallenge) getActivity().getApplicationContext()).getBoxStore().boxFor(Country.class);
-        countryBox.query().build()
-                .subscribe()
-                .observer(data -> Log.i("Picker", "Data count: " + data.size()));
+
+        adapter.setOnItemClickListener(this);
     }
 
     @NonNull

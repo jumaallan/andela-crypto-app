@@ -47,78 +47,100 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_normal"
             android:clipToPadding="false"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="@dimen/padding_normal"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="2dp"
-                app:cardElevation="2dp"
-                app:cardPreventCornerOverlap="false"
-                app:cardUseCompatPadding="false">
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-                <RadioGroup
-                    android:id="@+id/group_crypto"
+                <android.support.v7.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="false">
 
-                    <RadioButton
-                        android:id="@+id/radio_bitcoin"
-                        style="@style/ToggleButton"
-                        android:checked="true"
-                        android:text="@string/calc_bitcoin" />
+                    <RadioGroup
+                        android:id="@+id/group_crypto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/radio_ethereum"
-                        style="@style/ToggleButton"
-                        android:text="@string/calc_ethereum" />
-                </RadioGroup>
-            </android.support.v7.widget.CardView>
+                        <RadioButton
+                            android:id="@+id/radio_bitcoin"
+                            style="@style/ToggleButton"
+                            android:checked="true"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/calc_bitcoin" />
 
-            <EditText
-                android:id="@+id/edit_crypto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:gravity="end"
-                android:imeOptions="flagNoExtractUi"
-                android:inputType="numberDecimal"
-                android:text="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                        <RadioButton
+                            android:id="@+id/radio_ethereum"
+                            style="@style/ToggleButton"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@string/calc_ethereum" />
+                    </RadioGroup>
+                </android.support.v7.widget.CardView>
+
+                <EditText
+                    android:id="@+id/edit_crypto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="numberDecimal"
+                    android:text="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            </LinearLayout>
 
             <android.support.v4.widget.Space
+                android:layout_width="8dp"
+                android:layout_height="0dp" />
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="32dp" />
-
-            <TextView
-                android:id="@+id/text_currency"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                tools:text="USD, US Dollar" />
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit_currency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:gravity="end"
-                android:imeOptions="flagNoExtractUi"
-                android:inputType="numberDecimal"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                <TextView
+                    android:id="@+id/text_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/padding_small"
+                    android:paddingTop="@dimen/padding_small"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    tools:text="USD, US Dollar" />
 
+                <EditText
+                    android:id="@+id/edit_currency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:enabled="false"
+                    android:gravity="end"
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+            </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/padding_normal">
+        android:layout_height="match_parent">
 
         <HorizontalScrollView
             android:layout_width="match_parent"

@@ -15,4 +15,13 @@
             android:title="@string/preference_show_colored_cards" />
 
     </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory android:title="@string/preference_category_converter">
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="DECIMAL_PLACES"
+            android:summary="@string/preference_show_3_decimal_places_summary"
+            android:title="@string/preference_show_3_decimal_places" />
+
+    </android.support.v7.preference.PreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>

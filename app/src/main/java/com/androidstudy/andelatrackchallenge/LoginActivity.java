@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 import io.objectbox.Box;
 import timber.log.Timber;
 
-public class LoginActivity extends ThemableActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends TransparentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.mFacebookLogin)
     LoginButton mFacebookLogin;
@@ -49,9 +49,6 @@ public class LoginActivity extends ThemableActivity implements GoogleApiClient.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
@@ -73,7 +70,7 @@ public class LoginActivity extends ThemableActivity implements GoogleApiClient.O
         mFacebookLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                //Load User Data
+                //Load User DataDb
                 loadUserData(loginResult);
             }
 

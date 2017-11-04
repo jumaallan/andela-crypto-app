@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 
+import com.androidstudy.andelatrackchallenge.R;
+
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 
@@ -19,8 +21,6 @@ public class Country implements Parcelable {
 
     @Id
     public long id;
-    @DrawableRes
-    public int flagRes;
     public String name;
     public String currency;
     public String code;
@@ -37,18 +37,68 @@ public class Country implements Parcelable {
     public Country() {
     }
 
-    public Country(String name, String currency, String code, @DrawableRes int flagRes) {
+    public Country(String name, String currency, String code) {
         this.name = name;
         this.currency = currency;
         this.code = code;
-        this.flagRes = flagRes;
+    }
+
+    @DrawableRes
+    public int getFlagRes() {
+        switch (code) {
+            case "USD":
+                return R.drawable.flag_us;
+            case "EUR":
+                return R.drawable.flag_eu;
+            case "GBP":
+                return R.drawable.flag_gb;
+            case "INR":
+                return R.drawable.flag_in;
+            case "JPY":
+                return R.drawable.flag_jp;
+            case "AUD":
+                return R.drawable.flag_au;
+            case "RUB":
+                return R.drawable.flag_ru;
+            case "BRL":
+                return R.drawable.flag_br;
+            case "MXN":
+                return R.drawable.flag_mx;
+            case "CHF":
+                return R.drawable.flag_ch;
+            case "CNY":
+                return R.drawable.flag_cn;
+            case "CAD":
+                return R.drawable.flag_ca;
+            case "ZAR":
+                return R.drawable.flag_za;
+            case "TRY":
+                return R.drawable.flag_tr;
+            case "ILS":
+                return R.drawable.flag_il;
+            case "TWD":
+                return R.drawable.flag_tw;
+            case "NZD":
+                return R.drawable.flag_nz;
+            case "HKD":
+                return R.drawable.flag_hk;
+            case "SEK":
+                return R.drawable.flag_se;
+            case "PLN":
+                return R.drawable.flag_pl;
+            case "NGN":
+                return R.drawable.flag_ng;
+            case "KES":
+                return R.drawable.flag_ke;
+            default:
+                return R.drawable.ic_action_add_card;
+        }
     }
 
     protected Country(Parcel in) {
         name = in.readString();
         currency = in.readString();
         code = in.readString();
-        flagRes = in.readInt();
         btcStatus = in.readInt();
         ethStatus = in.readInt();
         btc = in.readFloat();
@@ -79,7 +129,6 @@ public class Country implements Parcelable {
         parcel.writeString(name);
         parcel.writeString(currency);
         parcel.writeString(code);
-        parcel.writeInt(flagRes);
         parcel.writeInt(btcStatus);
         parcel.writeInt(ethStatus);
         parcel.writeFloat(btc);
@@ -96,7 +145,6 @@ public class Country implements Parcelable {
         Country country = (Country) o;
 
         if (id != country.id) return false;
-        if (flagRes != country.flagRes) return false;
         if (Float.compare(country.btc, btc) != 0) return false;
         if (Float.compare(country.eth, eth) != 0) return false;
         if (country.ethStatus != ethStatus) return false;
@@ -111,7 +159,6 @@ public class Country implements Parcelable {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + flagRes;
         result = 31 * result + name.hashCode();
         result = 31 * result + currency.hashCode();
         result = 31 * result + code.hashCode();
@@ -128,7 +175,6 @@ public class Country implements Parcelable {
     public String toString() {
         return "Country{" +
                 "id=" + id +
-                ", flagRes=" + flagRes +
                 ", name='" + name + '\'' +
                 ", currency='" + currency + '\'' +
                 ", code='" + code + '\'' +

@@ -1,5 +1,6 @@
 package com.androidstudy.andelatrackchallenge.cards;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -12,9 +13,20 @@ import android.widget.Toast;
 
 import com.androidstudy.andelatrackchallenge.R;
 import com.androidstudy.andelatrackchallenge.models.Country;
+import com.androidstudy.andelatrackchallenge.models.HistoryDb;
+import com.androidstudy.andelatrackchallenge.models.HistoryDb_;
+import com.androidstudy.andelatrackchallenge.network.ApiClient;
+
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.objectbox.Box;
+import io.objectbox.BoxStore;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by anonymous on 11/1/17.
@@ -66,7 +78,7 @@ public class CardActionsDialog extends BottomSheetDialogFragment {
         if (country != null) {
             nameText.setText(country.name);
             codeText.setText(country.code);
-            flagImage.setImageResource(country.flagRes);
+            flagImage.setImageResource(country.getFlagRes());
 
             pinText.setText(country.isFavorite ? "Unpin item" : "Pin item to top");
             pinText.setCompoundDrawablesWithIntrinsicBounds(

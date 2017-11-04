@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.androidstudy.andelatrackchallenge.models.Country;
 import com.androidstudy.andelatrackchallenge.models.Exchange;
+import com.androidstudy.andelatrackchallenge.models.History;
 import com.squareup.moshi.Moshi;
 
 import io.reactivex.Single;
@@ -27,8 +28,10 @@ import timber.log.Timber;
  * to avoid repeating our code!
  */
 public class ApiClient {
+    public static final String BTC_ETH = "BTC,ETH";
+    public static final String BTC = "BTC";
+    public static final String ETH = "ETH";
 
-    private static final String BTC_ETH = "BTC,ETH";
     private static Api api;
     private static Retrofit retrofit;
     private static OkHttpClient client;
@@ -120,4 +123,31 @@ public class ApiClient {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static Single<History> loadDailyHistory(Country country, String to) {
+        return getApi().getDayHistory(country.code, to)
+                .subscribeOn(Schedulers.io())
+                .map(response -> {
+                    if (response.isSuccessful()) {
+                        return response.body();
+                    } else {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static Single<History> loadHourlyHistory(Country country, String to) {
+        return getApi().getHourHistory(country.code, to)
+                .subscribeOn(Schedulers.io())
+                .map(response -> {
+                    if (response.isSuccessful()) {
+                        return response.body();
+                    } else {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

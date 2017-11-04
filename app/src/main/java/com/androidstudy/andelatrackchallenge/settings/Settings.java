@@ -91,4 +91,8 @@ public class Settings {
     public static boolean isShowColoredCards() {
         return defaultPrefs.getBoolean("COLORED_CARDS", false);
     }
+
+    public static boolean isThreeDecimalPlaces() {
+        return defaultPrefs.getBoolean("DECIMAL_PLACES", false);
+    }
 }

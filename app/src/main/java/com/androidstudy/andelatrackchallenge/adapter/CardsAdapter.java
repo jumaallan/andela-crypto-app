@@ -1,5 +1,7 @@
 package com.androidstudy.andelatrackchallenge.adapter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +17,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -72,7 +76,36 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
 
     private void showEmptyView(boolean show) {
         if (emptyView != null) {
-            emptyView.setVisibility(show ? View.VISIBLE : View.GONE);
+            if (show) {
+                emptyView.setVisibility(View.VISIBLE);
+                emptyView.setAlpha(0.0f);
+                emptyView.setScaleX(0.6f);
+                emptyView.setScaleY(0.6f);
+
+                emptyView.animate()
+                        .alpha(1.0f)
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setInterpolator(new AccelerateInterpolator())
+                        .setDuration(400L)
+                        .setListener(null)
+                        .start();
+            } else {
+                emptyView.animate()
+                        .alpha(0.0f)
+                        .scaleX(0.6f)
+                        .scaleY(0.6f)
+                        .setInterpolator(new OvershootInterpolator())
+                        .setDuration(400L)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                emptyView.setVisibility(View.GONE);
+                            }
+                        })
+                        .start();
+            }
         }
     }
 
@@ -250,7 +283,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
         public void bind(Country country) {
             signature = country.toString();
             titleTextView.setText(country.currency);
-            flagImageView.setImageResource(country.flagRes);
+            flagImageView.setImageResource(country.getFlagRes());
             starImage.setVisibility(country.isFavorite ? View.VISIBLE : View.GONE);
 
             Context context = itemView.getContext();
@@ -279,7 +312,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
 
         private void loadCardColor(Country country) {
             Context context = itemView.getContext();
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), country.flagRes);
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), country.getFlagRes());
             Palette.from(bitmap)
                     .maximumColorCount(4)
                     .generate(palette -> {
