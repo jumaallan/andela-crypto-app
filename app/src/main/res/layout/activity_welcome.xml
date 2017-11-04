@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.androidstudy.cryptoconverter.view.ScrimInsetsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.androidstudy.andelatrackchallenge.view.ScrimInsetsFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/welcome_root"
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true" />
 
-    <com.androidstudy.cryptoconverter.widget.InkPageIndicator
+    <com.androidstudy.andelatrackchallenge.widget.InkPageIndicator
         android:id="@+id/page_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,4 +50,4 @@
         android:text="@string/skip"
         android:textColor="@android:color/white" />
 
-</com.androidstudy.cryptoconverter.view.ScrimInsetsFrameLayout>
+</com.androidstudy.andelatrackchallenge.view.ScrimInsetsFrameLayout>

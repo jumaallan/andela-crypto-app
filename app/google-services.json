@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "489271706929",
+    "project_id": "andelatrackchallenge"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489271706929:android:21a9bc288f4477a5",
+        "android_client_info": {
+          "package_name": "com.androidstudy.andelatrackchallenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "489271706929-4k3pi51am4ks54hstu454l4v72g6hoqv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.androidstudy.andelatrackchallenge",
+            "certificate_hash": "d30110b3150dd52ee45ecb488304d024fead87d4"
+          }
+        },
+        {
+          "client_id": "489271706929-aahhkckokardch07diuknjgsm9jticu3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwz9K9ROwHery6ML_IUkUkMDmQBwd6ZzM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
