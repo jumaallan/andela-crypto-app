@@ -13,7 +13,7 @@ You will need the following to run this project:
 ### Splash Screen
 The user will be presented with a splash screen first time they use the app. This helps them understand how the app is supposed to work using visual aids.
 
-<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-06-12.png" width="280"/>
+<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-06-12.png" width="280"/> <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-05-00-14-57.png" width="280"/> <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-05-00-15-00.png" width="280"/>
 
 ### Login Page
 The user proceeds to the Login Page, where they need to authenticate by using either Google or Facebook.
