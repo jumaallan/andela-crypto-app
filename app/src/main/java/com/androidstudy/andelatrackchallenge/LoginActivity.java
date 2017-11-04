@@ -3,11 +3,6 @@ package com.androidstudy.andelatrackchallenge;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.androidstudy.andelatrackchallenge.models.User;
 import com.androidstudy.andelatrackchallenge.settings.Settings;
@@ -15,7 +10,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -27,7 +21,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,15 +29,14 @@ import timber.log.Timber;
 
 public class LoginActivity extends TransparentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    private static final int RC_SIGN_IN = 121;
     @BindView(R.id.mFacebookLogin)
     LoginButton mFacebookLogin;
     @BindView(R.id.mGoogleLogin)
     SignInButton mGoogleLogin;
-
     Box<User> userBox;
-    private CallbackManager callbackManager;
-    private static final int RC_SIGN_IN = 121;
     GoogleApiClient mGoogleApiClient;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

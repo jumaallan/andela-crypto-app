@@ -1,20 +1,12 @@
 package com.androidstudy.andelatrackchallenge;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.androidstudy.andelatrackchallenge.settings.Settings;
 import com.evernote.android.state.StateSaver;
-
-import io.reactivex.Maybe;
-import io.reactivex.subjects.BehaviorSubject;
-import timber.log.Timber;
-
 
 /**
  * Created by anonymous on 11/2/17.

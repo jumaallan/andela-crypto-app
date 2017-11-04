@@ -32,7 +32,6 @@ import timber.log.Timber;
 
 public class ConverterActivity extends ThemableActivity {
     public static final String COUNTRY = "COUNTRY";
-
     // todo include network-manager to resend request when internet connection comes around
     private HistoryRepository historyRepository;
     private Box<Country> countryBox;
