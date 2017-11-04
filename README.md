@@ -41,3 +41,8 @@ User's can change themes easily. They can also generate colors from County's fla
 The users can also modify cards location by pinning them to the top, or unpinning them and by deleting them also!
 
 <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-36-38.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-36-44.png" width="425"/>
+
+### Sign Out
+The users can leave the app by signing out. This clears their user data as well as the app's data and customizations, if any!
+
+<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-37-06.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-37-15.png" width="425"/>
