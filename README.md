@@ -24,10 +24,10 @@ The user proceeds to the Login Page, where they need to authenticate by using ei
 After being authenticated, the use is redirected to the Home Page, which is the Main Activity in our application.
 The application has a Dark and a Light theme, which appear as shown below.
 
-<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-32-18.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-31-54.png" width="425"/> <img src="image2.png" width="425"/>
+<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-32-18.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-31-54.png" width="425"/> 
 
 The user is prompted to create a new Card using the FAB, on the bottom right corner. This is how it appears on different themes.
 
-<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-32-24.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-32-36.png"/> <img src="image2.png" width="425"/>
+<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-32-24.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-32-36.png" width="425"/>
 
 After adding countries, they appear as shown below:
