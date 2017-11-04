@@ -42,7 +42,24 @@ The users can also modify cards location by pinning them to the top, or unpinnin
 
 <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-36-38.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-36-44.png" width="425"/>
 
+The users can also modify cards location by pinning them to the top, or unpinning them and by deleting them also!
+
+<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-36-38.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-36-44.png" width="425"/>
+
+The app updates real time currency rates, and shows if the currency is gaining or loosing on the Home Screen, on each card the user has created!
+
+<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-44-22.png" width="425"/>
+
+As shown in the above image, you can see the gain and the loss using the red and green drawables that make it easy to distinguish how the currency is comparing to the crypto currencies in real time!
+
+### Currency Conversion
+The users can easily convert currencies by selecting the amount. They can switch between Bitcoin and Ethereum easily. The app also shows history for the last 5 days! Bonus!
+
 ### Sign Out
 The users can leave the app by signing out. This clears their user data as well as the app's data and customizations, if any!
 
 <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-37-06.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-37-15.png" width="425"/>
+
+## Some Notable Issues
+* Sign Out
+* Minor issues with pre-lollipop devices
