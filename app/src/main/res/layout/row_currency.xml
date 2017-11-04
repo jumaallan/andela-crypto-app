@@ -8,7 +8,7 @@
     android:layout_margin="@dimen/card_list_margin"
     android:foreground="?selectableItemBackground"
     app:cardBackgroundColor="?cardColor"
-    app:cardCornerRadius="3dp"
+    app:cardCornerRadius="4dp"
     app:cardElevation="2dp"
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="false">
@@ -34,7 +34,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:contentDescription="@null"
-                tools:src="@drawable/flag_us" />
+                tools:src="@drawable/flag_nz" />
 
             <TextView
                 android:id="@+id/text_view_currency_title"
@@ -45,7 +45,7 @@
                 android:layout_marginRight="@dimen/padding_medium"
                 android:layout_marginStart="@dimen/padding_normal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                tools:text="US Dollar" />
+                tools:text="New Zealand Dollar" />
 
             <ImageView
                 android:id="@+id/image_star"

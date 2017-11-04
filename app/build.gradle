@@ -85,9 +85,15 @@ dependencies {
 
     //Facebook SDK
     implementation deps.facebookSDK
-
     //Google Login SDK
     implementation deps.playServices.auth
+
+    // State saving/restoring
+    implementation deps.state.core
+    annotationProcessor deps.state.processor
+
+    // Draw simple spark-lines
+    implementation deps.spark
 
     //Circular Profile ImageView
     implementation deps.circleImageView

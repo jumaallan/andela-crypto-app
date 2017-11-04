@@ -249,7 +249,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
 
         public void bind(Country country) {
             signature = country.toString();
-            titleTextView.setText(country.name);
+            titleTextView.setText(country.currency);
             flagImageView.setImageResource(country.flagRes);
             starImage.setVisibility(country.isFavorite ? View.VISIBLE : View.GONE);
 

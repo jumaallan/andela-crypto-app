@@ -21,6 +21,8 @@ def versions = [
         rxjava2         : '2.1.6',
         rxandroid2      : '2.0.1',
         timber          : '4.6.0',
+        spark           : '1.1.2',
+        state           : '1.1.6',
 ]
 
 ext.versions = versions
@@ -85,10 +87,17 @@ ext.deps = [
         materialDialogs: [
                 core: 'com.afollestad.material-dialogs:core:' + versions.materialDialogs,
         ],
+        state          : [
+                core     : 'com.evernote:android-state:' + versions.state,
+                processor: 'com.evernote:android-state-processor:' + versions.state,
+        ],
+
         timber         : 'com.jakewharton.timber:timber:' + versions.timber,
         facebookSDK    : 'com.facebook.android:facebook-android-sdk:' + versions.facebookSDK,
         circleImageView: 'de.hdodenhof:circleimageview:' + versions.cicleImageView,
         sweetAlert     : 'cn.pedant.sweetalert:library:' + versions.sweetAlert,
+        spark          : 'com.robinhood.spark:spark:' + versions.spark,
+
         jUnit          : 'junit:junit:' + versions.jUnit,
         espresso       : [
                 core: 'com.android.support.test.espresso:espresso-core:' + versions.espresso,

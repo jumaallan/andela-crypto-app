@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.androidstudy.andelatrackchallenge.settings.Settings;
+import com.evernote.android.state.StateSaver;
 
 import io.reactivex.Maybe;
 import io.reactivex.subjects.BehaviorSubject;
@@ -26,6 +27,18 @@ import static com.androidstudy.andelatrackchallenge.ActivityEvent.STOP;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        StateSaver.restoreInstanceState(this, savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        StateSaver.saveInstanceState(this, outState);
+    }
 
     @Override
     protected void onResume() {
