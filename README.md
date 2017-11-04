@@ -1,5 +1,6 @@
 # Andela Track Challenge
-My Andela Learning Community 2.0 Android Intermediate Assessment Track Challenge
+My Andela Learning Community 2.0 Android Intermediate Assessment Track Challenge.
+The final apk can be download here : https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/andelatrackchallenge.apk
 
 ## Prerequisites
 You will need the following to run this project:
