@@ -55,7 +55,7 @@ As shown in the above image, you can see the gain and the loss using the red and
 ### Currency Conversion
 The users can easily convert currencies by selecting the amount. They can switch between Bitcoin and Ethereum easily. The app also shows history for the last 5 days! Bonus!
 
-<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-34-21.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-37-15.png" width="425"/>
+<img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-34-21.png" width="425"/>  <img src="https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/screenshots/Screenshot_2017-11-04-23-34-26.png" width="425"/>
 
 ### Sign Out
 The users can leave the app by signing out. This clears their user data as well as the app's data and customizations, if any!
