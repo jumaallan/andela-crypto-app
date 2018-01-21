@@ -31,9 +31,8 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+      - chmod +x gradlew
       - run: gradle dependencies
-      - run: sdkmanager --install "ndk-bundle"
-      - run: sdkmanager --licenses
 
       - save_cache:
           paths:
