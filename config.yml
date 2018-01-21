@@ -32,6 +32,8 @@ jobs:
           - v1-dependencies-
 
       - run: gradle dependencies
+      - run: sdkmanager --install "ndk-bundle"
+      - run: sdkmanager --licenses
 
       - save_cache:
           paths:
