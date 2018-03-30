@@ -9,7 +9,7 @@ buildscript {
         maven { url "http://objectbox.net/beta-repo/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha08'
+        classpath 'com.android.tools.build:gradle:3.1.0'
         classpath 'io.objectbox:objectbox-gradle-plugin:1.0.1'
         classpath 'com.google.gms:google-services:3.1.0'
     }

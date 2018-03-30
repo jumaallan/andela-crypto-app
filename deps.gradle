@@ -93,7 +93,6 @@ ext.deps = [
                 core     : 'com.evernote:android-state:' + versions.state,
                 processor: 'com.evernote:android-state-processor:' + versions.state,
         ],
-
         snackProgressBar: 'com.github.tingyik90:snackprogressbar:' + versions.snackProgressBar,
         timber          : 'com.jakewharton.timber:timber:' + versions.timber,
         facebookSDK     : 'com.facebook.android:facebook-android-sdk:' + versions.facebookSDK,

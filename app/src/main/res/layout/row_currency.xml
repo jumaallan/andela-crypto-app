@@ -34,7 +34,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:contentDescription="@null"
-                tools:src="@drawable/flag_nz" />
+                tools:src="@drawable/flag_ke" />
 
             <TextView
                 android:id="@+id/text_view_currency_title"
@@ -45,7 +45,7 @@
                 android:layout_marginRight="@dimen/padding_medium"
                 android:layout_marginStart="@dimen/padding_normal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                tools:text="New Zealand Dollar" />
+                tools:text="Kshs" />
 
             <ImageView
                 android:id="@+id/image_star"
