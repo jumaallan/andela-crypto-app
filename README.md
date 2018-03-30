@@ -1,6 +1,7 @@
-# Andela Track Challenge
+# Andela Track Challenge [![Build Status](https://circleci.com/gh/jumaallan/AndelaTrackChallenge/tree/master.svg?style=shield)](https://circleci.com/gh/jumaallan/Andela-Med-Manager/tree/master)   [![Maintainability](https://api.codeclimate.com/v1/badges/43a1639bce2750ec37b3/maintainability)](https://codeclimate.com/github/jumaallan/AndelaCryptoApp/maintainability)  [![Test Coverage](https://api.codeclimate.com/v1/badges/43a1639bce2750ec37b3/test_coverage)](https://codeclimate.com/github/jumaallan/AndelaCryptoApp/test_coverage)
+
 My Andela Learning Community 2.0 Android Intermediate Assessment Track Challenge.
-The final apk can be download here : https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/andelatrackchallenge.apk
+> The final apk can be download here : https://github.com/jumadeveloper/AndelaTrackChallenge/blob/master/andelatrackchallenge.apk
 
 ## Prerequisites
 You will need the following to run this project:
